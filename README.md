@@ -1,7 +1,7 @@
 # flightinquire
 
-> A Vue.js project
-
+> 毕业设计飞机航班信息查询系统
+使用vue+iview
 ## Build Setup
 
 ``` bash
