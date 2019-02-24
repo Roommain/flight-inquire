@@ -18,13 +18,23 @@ export default new Router({
       path: '/main',
       name: 'main',
       component: resolve => require(['@/views/Main'], resolve),
-      children:[
-        {
-          path: '/statistical',
-          name: '数据',
-          component: resolve => require(['@/views/statistical/statistical_main'], resolve),
-        },
-      ]
+      // children:[
+      //   {
+      //     path: '/statistical',
+      //     name: '数据',
+      //     component: resolve => require(['@/views/statistical/statistical_main'], resolve),
+      //   },
+      //   {
+      //     path: '/mainsearch',
+      //     name: '主页搜索',
+      //     component: resolve => require(['@/views/mainsearch/mainsearch'], resolve),
+      //   },
+      // ]
+    },
+    {
+      path: '/statistical',
+      name: '数据',
+      component: resolve => require(['@/views/statistical/statistical_main'], resolve),
     },
     
     // 错误页面
