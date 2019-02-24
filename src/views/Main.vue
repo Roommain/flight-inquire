@@ -31,12 +31,12 @@
                     <Option v-for="item in searchType" :value="item.value" :key="item.value">{{ item.label }}</Option>
                 </Select>
                 <!-- 航班号查询 -->
-                <Input v-show="flightNumShow" prefix="ios-plane" size="large" placeholder="请输入航班号" style="width: auto" />
+                <Input v-show="flightNumShow" v-model="flightValue" prefix="ios-plane" size="large" placeholder="请输入航班号" style="width: auto" />
                 <!-- 两地之间查询 -->
                 <span v-show="cityShow">
-                    <Input prefix="ios-pin" v-model="value" size="large" placeholder="出发城市" style="width: 120px" />
+                    <Input prefix="ios-pin" v-model="departValue" size="large" placeholder="出发城市" style="width: 120px" />
                         <span class="change"><Icon type="ios-plane-outline" /></span>
-                    <Input prefix="ios-pin" v-model="value" size="large" placeholder="到达城市" style="width: 120px" />     
+                    <Input prefix="ios-pin" v-model="arriveValue" size="large" placeholder="到达城市" style="width: 120px" />     
                 </span>
                 <DatePicker type="date" size="large" :options="options" placeholder="请选择日期" style="width: 220px"></DatePicker>
                 <Button type="primary" @click="search">航班查询</Button>
@@ -53,6 +53,9 @@ export default {
                 searchValue: '按航班号搜索',
                 flightNumShow: true,
                 cityShow: false,
+                flightValue: '',
+                departValue: '',
+                arriveValue: '',
                 searchType: [
                     {
                         value: '按航班号搜索',

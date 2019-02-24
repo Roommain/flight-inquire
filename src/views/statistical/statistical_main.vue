@@ -30,19 +30,22 @@
                     <Option v-for="item in searchType" :value="item.value" :key="item.value">{{ item.label }}</Option>
                 </Select>
                 <!-- 航班号查询 -->
-                <Input v-show="flightNumShow" prefix="ios-plane" size="large" placeholder="请输入航班号" style="width: auto" />
+                <Input v-show="flightNumShow" v-model="flightValue" prefix="ios-plane" size="large" placeholder="请输入航班号" style="width: auto" />
                 <!-- 两地之间查询 -->
                 <span v-show="cityShow">
-                    <Input prefix="ios-pin" v-model="value" size="large" placeholder="出发城市" style="width: 120px" />
+                    <Input prefix="ios-pin" v-model="departValue" size="large" placeholder="出发城市" style="width: 120px" />
                         <span class="change"><Icon type="ios-plane-outline" /></span>
-                    <Input prefix="ios-pin" v-model="value" size="large" placeholder="到达城市" style="width: 120px" />     
+                    <Input prefix="ios-pin" v-model="arriveValue" size="large" placeholder="到达城市" style="width: 120px" />     
                 </span>
                 <DatePicker type="date" size="large" :options="options" placeholder="请选择日期" style="width: 220px"></DatePicker>
                 <Button type="primary" @click="search">航班查询</Button>
             </div>
         </Card>
         <Card class="table">
-            <Table stripe :columns="columns" :data="data"></Table>
+            <Table stripe :loading="loading" :columns="columns" :data="pageData" :height="tableHeight"></Table>
+            <div class="page">
+                <Page :total="pantectTotalSize" :current=page :page-size="size" @on-change="changePage" @on-page-size-change="changeSize" show-elevator show-sizer show-total/>
+            </div>
         </Card>
         <!-- <router-view class="main-iview"></router-view> -->
     </div>
@@ -52,9 +55,19 @@ export default {
     data() {
         return {
                 theme1: 'dark',
+                loading: true,
                 searchValue: '按航班号搜索',
                 flightNumShow: true,
                 cityShow: false,
+                tableHeight: '',
+                flightValue: '',
+                departValue: '',
+                arriveValue: '',
+                pageData:[],
+                pantectTotalSize: 200,
+                page:1,
+                size:20,
+                
                 searchType: [
                     {
                         value: '按航班号搜索',
@@ -71,13 +84,13 @@ export default {
                     }
                 },
                 columns: [
-                    // {
-                    //     type: 'index',
-                    //     title: '序号',
-                    //     width: 80,
-                    //     align: 'center',
-                    //     tooltip:true,
-                    // },
+                    {
+                        type: 'index',
+                        title: '序号',
+                        width: 80,
+                        align: 'center',
+                        tooltip:true,
+                    },
                     {
                         title: '航班信息',
                         key: 'flightInformation',
@@ -130,35 +143,20 @@ export default {
                         placeOfDestination: '北京',
                         onTimeRate : '100%',
                         status : '到达'
-                    },
-                    {
-                        flightInformation: '国航CA155',
-                        takeOffTime: '09:45',
-                        placeOfDeparture: '重庆',
-                        arrivalTime: '11:53',
-                        placeOfDestination: '北京',
-                        onTimeRate : '100%',
-                        status : '到达'
-                    },
-                    {
-                        flightInformation: '国航CA155',
-                        takeOffTime: '09:45',
-                        placeOfDeparture: '重庆',
-                        arrivalTime: '11:53',
-                        placeOfDestination: '北京',
-                        onTimeRate : '100%',
-                        status : '到达'
-                    },
+                    }
                 ]
             }
     },
-    // created() {
-    //     this.$axios
-    //         .get('')
-    //         .then(data => {
-    //             console.log(data.data.subjects);
-    //         });
-    // },
+    created() {
+        this.$axios
+            .get('https://www.easy-mock.com/mock/5c00cea7b5ca4f6a533ac6d0/example/flightInformation')
+            .then(data => {
+                this.loading = false;
+                console.log(data);
+                this.data = data.data.list || [];
+                this.paging(this.data,this.page,this.size);
+            });
+    },
     methods:{
         search () {
             console.log('点击了搜索');
@@ -173,6 +171,29 @@ export default {
             }
             this.$router.push({path:name});
         },
+        // 控制表分页
+        paging (number,page,size) {
+            var startIndex = (page-1) * size;
+            var endIndex = page * size;
+            this.pageData = number.slice(startIndex,endIndex);
+            if(this.pageData.length > 12){
+                this.tableHeight = 600;
+            }else{
+                this.tableHeight = 0;
+            }
+        },
+        // 改变page
+        changePage (val) {
+            console.log(val);
+            this.page = val;
+            this.paging (this.data,this.page,this.size);
+        },
+        //改变size
+        changeSize (val) {
+            console.log(val);
+            this.size = val;
+            this.paging (this.data,this.page,this.size);
+        }
     },
         /**
      * 监听搜索条件是按昨天还是月份
@@ -210,6 +231,11 @@ export default {
 }
 .table {
     margin: 10px 50px;
+}
+.page {
+    margin-top: 10px;
+    // margin-left: 30%;
+    text-align: center;
 }
 </style>
 
