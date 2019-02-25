@@ -1,29 +1,5 @@
 <template>
     <div class="statistical-main">
-        <header class="header">
-            <Menu @on-select="selectMenu" mode="horizontal" :theme="theme1" active-name="main">
-                <MenuItem name="logo">
-                    <img class="logo" src="../../assets/images/fei.png" alt="">
-                </MenuItem>
-                <MenuItem name="main">
-                    <Icon type="md-home"/>
-                    首页
-                </MenuItem>
-                <MenuItem name="data">
-                    <Icon type="ios-analytics"/>
-                    数据分析
-                </MenuItem>
-                <Submenu name="user">
-                    <template slot="title">
-                        <Icon type="ios-people" />
-                        用户信息
-                    </template>
-                        <MenuItem name="3-1">查看信息</MenuItem>
-                        <MenuItem name="3-2">修改密码</MenuItem>
-                        <MenuItem name="3-3">退出</MenuItem>
-                </Submenu>               
-            </Menu>
-        </header>
         <Card class="card">
             <div class="filtrate">
                 <Select v-model="searchValue" size="large" style="width:200px;">
@@ -47,14 +23,13 @@
                 <Page :total="pantectTotalSize" :current=page :page-size="size" @on-change="changePage" @on-page-size-change="changeSize" show-elevator show-sizer show-total/>
             </div>
         </Card>
-        <!-- <router-view class="main-iview"></router-view> -->
     </div>
 </template>
 <script>
 export default {
     data() {
         return {
-                theme1: 'dark',
+                // theme1: 'dark',
                 loading: true,
                 searchValue: '按航班号搜索',
                 flightNumShow: true,
@@ -213,15 +188,15 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.logo {
-    height: 50px;
-    margin-top: 5px;
-}
+// .logo {
+//     height: 50px;
+//     margin-top: 5px;
+// }
 .card {
-    // margin: 10px 200px;
+
     background-color: rgba(255, 255, 255, 0.3);
     .filtrate {
-        margin: 10px 200px;
+        text-align: center;
     }
     .change {
         margin: 0 10px;

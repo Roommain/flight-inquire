@@ -7,7 +7,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/main'
+      redirect: '/login'
     },
     {
       path: '/login',
@@ -15,27 +15,38 @@ export default new Router({
       component: resolve => require(['@/views/logins/login'], resolve),
     },
     {
+      path: '/changePassword',
+      name: '修改密码',
+      component: resolve => require(['@/views/changePassword/changePassword'], resolve),
+    },
+    {
+      path: '/register',
+      name: '注册',
+      component: resolve => require(['@/views/register/register'], resolve),
+    },
+    {
       path: '/main',
       name: 'main',
       component: resolve => require(['@/views/Main'], resolve),
-      // children:[
-      //   {
-      //     path: '/statistical',
-      //     name: '数据',
-      //     component: resolve => require(['@/views/statistical/statistical_main'], resolve),
-      //   },
-      //   {
-      //     path: '/mainsearch',
-      //     name: '主页搜索',
-      //     component: resolve => require(['@/views/mainsearch/mainsearch'], resolve),
-      //   },
-      // ]
+      redirect: '/statistical',
+      children:[
+        {
+          path: '/statistical',
+          name: '数据',
+          component: resolve => require(['@/views/statistical/statistical_main'], resolve),
+        },
+        {
+          path: '/mainsearch',
+          name: '主页搜索',
+          component: resolve => require(['@/views/mainsearch/mainsearch'], resolve),
+        },
+      ]
     },
-    {
-      path: '/statistical',
-      name: '数据',
-      component: resolve => require(['@/views/statistical/statistical_main'], resolve),
-    },
+    // {
+    //   path: '/statistical',
+    //   name: '数据',
+    //   component: resolve => require(['@/views/statistical/statistical_main'], resolve),
+    // },
     
     // 错误页面
     {
