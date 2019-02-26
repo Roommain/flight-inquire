@@ -5,11 +5,13 @@ import App from './App'
 import router from './router'
 import axios from 'axios' //引入axios
 import VueResource from 'vue-resource'
-import iView from 'iview';
+import iView from 'iview'
 import 'iview/dist/styles/iview.css'
+import  Cookies from 'js-cookie'
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios //把axios添加到vue原型
+Vue.prototype.$cookie = Cookies;//cookie操作
 Vue.use(VueResource)
 Vue.use(iView);
 
@@ -21,7 +23,7 @@ new Vue({
   template: '<App/>'
 })
 
-
+// 
 //
 //                       _oo0oo_
 //                      o8888888o

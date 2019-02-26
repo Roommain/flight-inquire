@@ -4,8 +4,8 @@
             <Card class="card">
                 <h1>飞途登录</h1>
                 <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline" inline>
-                    <FormItem prop="user">
-                        <Input type="text" size="large" v-model="formInline.user" placeholder="手机号码" style="width: 300px">
+                    <FormItem prop="telPhone">
+                        <Input type="text" size="large" v-model="formInline.telPhone" placeholder="手机号码" style="width: 300px">
                             <Icon type="ios-person-outline" slot="prepend"></Icon>
                         </Input>
                     </FormItem>
@@ -22,7 +22,7 @@
                         <Button class="login-button" type="primary" @click="handleSubmit('formInline')" style="width: 300px">登录</Button>
                     </FormItem>
                     <div class="login-register">
-                        <router-link class="orget-the-password" to="changePassword" tag="span">忘记密码</router-link>
+                        <router-link class="orget-the-password" to="findPassword" tag="span">忘记密码</router-link>
                         <router-link class="quick-registration" to="register" tag="span">快速注册</router-link>
                     </div>
                 </Form>
@@ -42,13 +42,14 @@ export default {
             }
         };
         return {
-            memoryPassword: false, //记住密码
+            memoryPassword: true, //记住密码
+            userName:'',
             formInline: {
-                user: '',
-                password: ''
+                telPhone: '18223070173',
+                password: '111111'
             },
             ruleInline: {
-                user: [
+                telPhone: [
                     { required: true, message: '你的手机号码错误', trigger: 'blur' },
                     { validator: valphone, trigger: 'blur' }
                 ],
@@ -70,15 +71,22 @@ export default {
         handleSubmit(name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
-                    // alert(this.formInline.user);
-                    if(this.formInline.user == '18223070173' && this.formInline.password == '111111'){
-                        this.$router.push({ name: '数据' });
-                        this.$Message.success('Success!');
-                    }else {
-                        alert('请检查账号密码是否正确');
-                    }
+                    this.$axios
+                        .post('api/user/login',this.formInline)
+                        .then(data => {
+                            console.log(data.data.code);
+                            if (data.data.code == 200) {
+                                this.userName = data.data.data.userName;
+                                console.log(this.userName);
+                                this.$cookie.set('userName',this.userName,{  expires:1/24*12 });
+                                // console.log(this.$cookie.get('userName'));
+                                this.$router.push({ name: '数据' });
+                            }else {
+                                this.$Message.error(data.data.msg);
+                            }
+                    });
                 } else {
-                    this.$Message.error('Fail!');
+                    this.$Message.error('账号密码有误');
                 }
             })
         },

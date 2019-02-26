@@ -108,6 +108,35 @@ export default {
                         align: 'center',
                         tooltip:true,
                     },
+                    {
+                        title: '操作',
+                        key: 'action',
+                        width: 100,
+                        align: 'center',
+                        // fixed: 'right',
+                        render: (h, params) => {
+                            return h('div', [
+                                h(
+                                    'Button',
+                                    {
+                                        props: {
+                                            type: 'primary',
+                                            size: 'small'
+                                        },
+                                        style: {
+                                            marginRight: '5px'
+                                        },
+                                        on: {
+                                            click: () => {
+                                                // this.particulars(params);
+                                            }
+                                        }
+                                    },
+                                    '详情'
+                                )
+                            ]);
+                        }
+                    }
                 ],
                 data: [
                     {
@@ -188,12 +217,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-// .logo {
-//     height: 50px;
-//     margin-top: 5px;
+// .statistical-main {
+//     height: 100%;
 // }
 .card {
-
+    margin: 10px 50px;
     background-color: rgba(255, 255, 255, 0.3);
     .filtrate {
         text-align: center;

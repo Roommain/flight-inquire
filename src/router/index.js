@@ -15,9 +15,9 @@ export default new Router({
       component: resolve => require(['@/views/logins/login'], resolve),
     },
     {
-      path: '/changePassword',
-      name: '修改密码',
-      component: resolve => require(['@/views/changePassword/changePassword'], resolve),
+      path: '/findPassword',
+      name: '找回密码',
+      component: resolve => require(['@/views/find-password/findPassword'], resolve),
     },
     {
       path: '/register',
@@ -36,17 +36,27 @@ export default new Router({
           component: resolve => require(['@/views/statistical/statistical_main'], resolve),
         },
         {
-          path: '/mainsearch',
-          name: '主页搜索',
-          component: resolve => require(['@/views/mainsearch/mainsearch'], resolve),
+          path: '/changePassword',
+          name: '改变密码',
+          component: resolve => require(['@/views/user_message/userChangePassword'], resolve),
+        },
+        {
+          path: '/userinfo',
+          name: '用户信息',
+          component: resolve => require(['@/views/user_message/userinfo'], resolve),
+        },
+        {
+          path: '/attention',
+          name: '关注我们',
+          component: resolve => require(['@/views/attention/attention'], resolve),
+        },
+        {
+          path: '/flightManage',
+          name: '关注我们',
+          component: resolve => require(['@/views/flight-manage/flightManage'], resolve),
         },
       ]
     },
-    // {
-    //   path: '/statistical',
-    //   name: '数据',
-    //   component: resolve => require(['@/views/statistical/statistical_main'], resolve),
-    // },
     
     // 错误页面
     {

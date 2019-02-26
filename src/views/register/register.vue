@@ -4,14 +4,14 @@
       <Card class="card">
           <h1>快速注册</h1>
           <Form class="form" ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
-            <FormItem label="用户名" prop="name">
-                <Input size="large" v-model="formValidate.name" placeholder="请输入你的用户名"></Input>
+            <FormItem label="用户名" prop="userName">
+                <Input size="large" v-model="formValidate.userName" placeholder="请输入你的用户名"></Input>
             </FormItem>
-            <FormItem label="E-mail" prop="mail">
-                <Input size="large" v-model="formValidate.mail" placeholder="请输入你的e-mail"></Input>
+            <FormItem label="E-mail" prop="email">
+                <Input size="large" v-model="formValidate.email" placeholder="请输入你的e-mail"></Input>
             </FormItem>
-            <FormItem label="手机号码" prop="phone">
-                <Input size="large" v-model="formValidate.phone" placeholder="请输入你的手机号码"></Input>
+            <FormItem label="手机号码" prop="telPhone">
+                <Input size="large" v-model="formValidate.telPhone" placeholder="请输入你的手机号码"></Input>
             </FormItem>
             <FormItem label="密码" prop="password">
                 <Input type="password" size="large" v-model="formValidate.password" placeholder="请输入你的密码"></Input>
@@ -42,20 +42,20 @@ export default {
       };
       return {
           formValidate: {
-              name: '',
-              mail: '',
-              phone: '',
+              userName: '',
+              email: '',
+              telPhone: '',
               password: ''
           },
           ruleValidate: {
-              name: [
+              userName: [
                   { required: true, message: '请输入你的用户名称', trigger: 'blur' }
               ],
-              mail: [
+              email: [
                   { required: true, message: '请输入你的邮箱', trigger: 'blur' },
                   { type: 'email', message: '请正确输入邮箱', trigger: 'blur' }
               ],
-              phone: [
+              telPhone: [
                   { required: true, message: '请输入你的手机号码', trigger: 'blur' },
                   { validator: valphone, trigger: 'blur' }
               ],
@@ -69,11 +69,22 @@ export default {
   methods: {
       handleSubmit (name) {
           this.$refs[name].validate((valid) => {
-              if (valid) {
-                  this.$Message.success('Success!');
-              } else {
-                  this.$Message.error('Fail!');
-              }
+                if (valid) {
+                    this.$axios
+                        .post('api/user/register',this.formValidate)
+                        .then(data => {
+                            console.log(data);
+                            if (data.data.code == 200) {
+                                this.$Message.success('注册成功，前往登录');
+                                this.$router.push({ name: '登录' });
+                                
+                            }else {
+                                this.$Message.error(data.data.msg);
+                            }
+                        });
+                } else {
+                    this.$Message.error('Fail!');
+                }
           })
       },
       handleReset (name) {
