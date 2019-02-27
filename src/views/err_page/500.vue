@@ -3,7 +3,7 @@
         <div class="error-content">
             <img width="578" height="352" src="../../assets/images/hint/500-reminder.png" data-pinit="registered">
             <h2>抱歉,服务器出错了!</h2>
-            <router-link to="/main"><button type="button" class="utils-save-btn ivu-btn ivu-btn-primary">返回首页</button></router-link>
+            <router-link to="main"><button type="button" class="utils-save-btn ivu-btn ivu-btn-primary">返回首页</button></router-link>
         </div>
     </div>
 </template>
@@ -11,10 +11,10 @@
 <script>
 export default {
     data(){
-        // return {
+        return {
         //     time:30,
         //     timeDevice:'',
-        // };
+        };
     },
     created(){
         // this.timeDevice = setInterval(() => {
@@ -32,7 +32,8 @@ export default {
     },
 };
 </script>
-<style lang="less">
+
+<style lang="less" scoped>
     .error-500{
         display: flex;
         justify-content: center;

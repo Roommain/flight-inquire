@@ -25,6 +25,7 @@
         </Card>
     </div>
 </template>
+
 <script>
 export default {
     data() {
@@ -217,9 +218,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-// .statistical-main {
-//     height: 100%;
-// }
+
 .card {
     margin: 10px 50px;
     background-color: rgba(255, 255, 255, 0.3);

@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import md5 from 'js-md5';
 export default {
     data() {
         const valphone = (rule, value, callback) => {
@@ -71,20 +72,22 @@ export default {
         handleSubmit(name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
+                    this.formInline.password = md5(this.formInline.password);
                     this.$axios
                         .post('api/user/login',this.formInline)
                         .then(data => {
                             console.log(data.data.code);
                             if (data.data.code == 200) {
                                 this.userName = data.data.data.userName;
-                                console.log(this.userName);
                                 this.$cookie.set('userName',this.userName,{  expires:1/24*12 });
-                                // console.log(this.$cookie.get('userName'));
                                 this.$router.push({ name: '数据' });
                             }else {
                                 this.$Message.error(data.data.msg);
                             }
-                    });
+                        }).catch(() => {
+                            this.$Message.error('登录失败');
+                            return;
+                        });
                 } else {
                     this.$Message.error('账号密码有误');
                 }

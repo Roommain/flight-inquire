@@ -10,7 +10,8 @@
                 <router-link tag="li" to="flightManage"><Icon type="ios-create-outline"/>&nbsp;&nbsp;航班管理</router-link>
             </nav>
             <div class="main-user-message">
-                <Icon type="md-notifications" />
+                <!-- <Icon type="md-notifications" /> -->
+                <Icon type="md-person" />
                 <Dropdown trigger="hover">
                     <a href="javascript:void(0)">
                         {{userName || '登录/注册'}}
@@ -44,40 +45,33 @@ export default {
     },
     created(){
         // this.getUserMessage();
-        this.userName = this.$cookie.get('userName');
+        this.userName = this.$cookie.get('userName') || '';
     },
     methods:{
         /**
          * 登出
          */
-        logout(){
-            this.$http.get(this.$api.LOGOUT,null,true).then(res=>{
-                if(res.code){
-                    return;
+        logout() {
+            this.$axios
+            .post('api/user/logout')
+            .then(data => {
+                if (data.data.code == 200) {
+                    this.$cookie.remove('userName');
+                    this.$router.push({ name: '登录' });
+                }else {
+                    this.$Message.error(data.data.msg);
                 }
-                //清空cookie
-                this.$cookie.remove('token');
-                this.$cookie.remove('refreshToken');
-                this.$cookie.remove('tokenTime');
-                this.$cookie.remove('dssap');
-                window.location.href='/#/login';
-                this.$store.commit('setBMapStatus',false);//将地图清除
-                
+            }).catch(() => {
+                this.$Message.error('退出失败');
+                return;
             });
         },
-        // /**
-        //  * 获取信息
-        //  */
-        // getUserMessage(){
-        //     this.$store.dispatch('getUserMessage').then(res => {
-        //         this.userName = res.data.username;
-        //     });
-        // }
+        
     }
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .main {
 
     height: 100%;
@@ -129,11 +123,11 @@ export default {
             float: right;
             color: rgba(209, 209, 209, 1);
             height: 100%;
-            .ivu-icon-md-notifications {
+            .ivu-icon-md-person {
                 float: left;
                 height: 100%;
                 line-height: 66px;
-                padding-right: 20px;
+                padding-right: 10px;
                 font-size: 18px;
                 color: rgba(209, 209, 209, 1);
                 cursor: pointer;

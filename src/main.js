@@ -8,12 +8,14 @@ import VueResource from 'vue-resource'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 import  Cookies from 'js-cookie'
+import rule from './libs/password_regexp';//引入密码验证强弱
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios //把axios添加到vue原型
 Vue.prototype.$cookie = Cookies;//cookie操作
 Vue.use(VueResource)
-Vue.use(iView);
+Vue.use(iView)
+Vue.prototype.$rule = rule; //统一验证规则
 
 /* eslint-disable no-new */
 new Vue({

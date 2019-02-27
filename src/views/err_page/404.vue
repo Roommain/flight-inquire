@@ -30,7 +30,7 @@ export default {
     },
 };
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .error-404{
         display: flex;
         justify-content: center;

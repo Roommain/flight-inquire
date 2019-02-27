@@ -13,6 +13,7 @@ module.exports = {
     proxyTable: {
       '/api': {
         target: 'http://120.79.66.215:9190',  //目标接口域名
+        // target: 'http://127.0.0.1:9190',  //目标接口域名
         changeOrigin: true,  //是否跨域
         pathRewrite: {
           '^/api': ''   //重写接口

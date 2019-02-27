@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import md5 from 'js-md5';
 export default {
   name: 'register',
     data () {
@@ -70,6 +71,7 @@ export default {
       handleSubmit (name) {
           this.$refs[name].validate((valid) => {
                 if (valid) {
+                    this.formValidate.password = md5(this.formValidate.password);
                     this.$axios
                         .post('api/user/register',this.formValidate)
                         .then(data => {

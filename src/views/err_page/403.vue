@@ -11,10 +11,10 @@
 <script>
 export default {
     data(){
-        // return {
+        return {
         //     time:30,
         //     timeDevice:'',
-        // };
+        };
     },
     created(){
         // this.timeDevice = setInterval(() => {
@@ -32,7 +32,7 @@ export default {
     },
 };
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .error-403{
         display: flex;
         justify-content: center;
