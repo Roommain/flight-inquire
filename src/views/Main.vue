@@ -57,6 +57,7 @@ export default {
             .then(data => {
                 if (data.data.code == 200) {
                     this.$cookie.remove('userName');
+                    this.$cookie.remove('token');
                     this.$router.push({ name: '登录' });
                 }else {
                     this.$Message.error(data.data.msg);

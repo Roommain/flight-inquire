@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import cookie from 'js-cookie';
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -27,32 +28,50 @@ export default new Router({
     {
       path: '/main',
       name: 'main',
+      meta: {
+        permissions: true,
+      },
       component: resolve => require(['@/views/Main'], resolve),
       redirect: '/statistical',
       children:[
         {
           path: '/statistical',
           name: '数据',
+          meta: {
+            permissions: true,
+          },
           component: resolve => require(['@/views/statistical/statistical_main'], resolve),
         },
         {
           path: '/changePassword',
           name: '改变密码',
+          meta: {
+            permissions: true,
+          },
           component: resolve => require(['@/views/user_message/userChangePassword'], resolve),
         },
         {
           path: '/userinfo',
           name: '用户信息',
+          meta: {
+            permissions: true,
+          },
           component: resolve => require(['@/views/user_message/userinfo'], resolve),
         },
         {
           path: '/attention',
           name: '关注我们',
+          meta: {
+            permissions: true,
+          },
           component: resolve => require(['@/views/attention/attention'], resolve),
         },
         {
           path: '/flightManage',
-          name: '关注我们',
+          name: '飞机航班管理',
+          meta: {
+            permissions: true,
+          },
           component: resolve => require(['@/views/flight-manage/flightManage'], resolve),
         },
       ]
@@ -62,26 +81,42 @@ export default new Router({
     {
         path: '/403',
         name: '没有权限',
-        // meta: {
-        //     permissions: false,
-        // },
+        meta: {
+            permissions: false,
+        },
         component: resolve => require(['@/views/err_page/403'], resolve),
     },
     {
         path: '/404',
         name: '获取不到资源',
-        // meta: {
-        //     permissions: false,
-        // },
+        meta: {
+            permissions: false,
+        },
         component: resolve => require(['@/views/err_page/404'], resolve),
     },
     {
         path: '/500',
         name: '网络错误',
-        // meta: {
-        //     permissions: false,
-        // },
+        meta: {
+            permissions: false,
+        },
         component: resolve => require(['@/views/err_page/500'], resolve),
     },
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if(to.meta.permissions){
+    var token = cookie.get('token');
+    if(token){
+      next();
+    }else{
+      next({
+        path:'/login'
+      })
+    }
+  }else{
+    next();
+  }
+});
+export default router;

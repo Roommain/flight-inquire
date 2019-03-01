@@ -10,21 +10,21 @@
         >
             <FormItem
                 label="旧密码："
-                prop="oldPass"
+                prop="oldPassword"
             >
                 <Input
                     type="password"
-                    v-model="modifyPwdForm.oldPass"
+                    v-model="modifyPwdForm.oldPassword"
                     placeholder="请输入旧密码"
                 />
             </FormItem>
             <FormItem
                 label="新密码："
-                prop="passwd"
+                prop="password"
             >
                 <Input
                     type="password"
-                    v-model="modifyPwdForm.passwd"
+                    v-model="modifyPwdForm.password"
                     placeholder="请输入新密码"
                 />
                 <div class="password-strength">
@@ -37,11 +37,11 @@
             </FormItem>
             <FormItem
                 label="确认新密码："
-                prop="passwdCheck"
+                prop="secondPassword"
             >
                 <Input
                     type="password"
-                    v-model="modifyPwdForm.passwdCheck"
+                    v-model="modifyPwdForm.secondPassword"
                     placeholder="请输入确认新密码"
                 />
             </FormItem>
@@ -63,7 +63,7 @@ export default {
     data() {
         const lengthlimit = '输入6至30个字符';
         // 旧密码自定义验证器
-        const validateOldPass = (rule, value, callback) => {
+        const validateoldPassword = (rule, value, callback) => {
             if (value.length < 6 || value.length > 30) {
                 return callback(new Error(lengthlimit));
             }
@@ -72,7 +72,7 @@ export default {
         // 新密码自定义验证器
         const validatePass = (rule, value, callback) => {
             let strength = this.$rule.strength(value);
-            let flag = this.setPasswdStrength(strength);
+            let flag = this.setpasswordStrength(strength);
             if (flag === -1) {
                 return callback(new Error(lengthlimit));
             }
@@ -83,7 +83,7 @@ export default {
         };
         // 确认新密码自定义验证器
         const validatePassCheck = (rule, value, callback) => {
-            if (value !== this.modifyPwdForm.passwd) {
+            if (value !== this.modifyPwdForm.password) {
                 callback(new Error('两次输入的密码不一致'));
             } else {
                 callback();
@@ -92,21 +92,21 @@ export default {
         return {
             // 修改密码表单绑定值
             modifyPwdForm: {
-                oldPass: '',
-                passwd: '',
-                passwdCheck: ''
+                oldPassword: '',
+                password: '',
+                secondPassword: ''
             },
             // 修改密码表单验证规则
             modifyPwdRule: {
-                oldPass: [
+                oldPassword: [
                     { required: true, message: '请输入旧密码', trigger: 'blur' },
-                    { validator: validateOldPass, trigger: 'blur' }
+                    { validator: validateoldPassword, trigger: 'blur' }
                 ],
-                passwd: [
+                password: [
                     { required: true, message: '请输入新密码', trigger: 'blur' },
                     { validator: validatePass, trigger: 'change' }
                 ],
-                passwdCheck: [
+                secondPassword: [
                     { required: true, message: '请输入新密码', trigger: 'blur' },
                     { validator: validatePassCheck, trigger: 'change' }
                 ]
@@ -123,7 +123,7 @@ export default {
         /**
          * 设置密码强度
          */
-        setPasswdStrength(strength) {
+        setpasswordStrength(strength) {
             // 0 1 2 3级密码强度
             let strengthZero = {
                 left: 'strength-left',
@@ -155,21 +155,24 @@ export default {
          */
         handleSubmit(formName) {
             this.$refs[formName].validate((valid) => {
-                if (!valid) {
-                    this.$Message.error('保存失败!');
-                }
+                // if (!valid) {
+                //     this.$Message.error('保存失败!');
+                // }
                 if (valid) {
                     // md5加密
                     const params = {
-                        oldPwd: md5(this.modifyPwdForm.oldPass),
-                        newPwd: md5(this.modifyPwdForm.passwd)
+                        oldPassword : md5(this.modifyPwdForm.oldPassword),
+                        password : md5(this.modifyPwdForm.password),
+                        secondPassword : md5(this.modifyPwdForm.secondPassword),
                     };
-                    this.$http.post(this.$api.UPDATE_PWD, params).then(res => {
-                        if (res.code !== 0) {
-                            return this.$Message.error(res.message);
+                    this.$axios
+                        .put('api/user/changePassword', params).then(data => {
+                            console.log(data);
+                        if (data.data.code == 200) {
+                            this.$Message.success(data.data.msg);
+                            this.logout(); // 暂定登出
                         } else {
-                            this.$Message.success(res.message);
-                            this.logout(); // 暂定登出 后面掉vuex方法即可
+                            return this.$Message.error(data.data.msg);
                         }
                     });
                 }
@@ -179,20 +182,21 @@ export default {
          * 登出
          */
         logout() {
-            this.$http.get(this.$api.LOGOUT, null, true).then(res => {
-                if (res.code) {
-                    return;
+            this.$axios
+            .post('api/user/logout')
+            .then(data => {
+                if (data.data.code == 200) {
+                    this.$cookie.remove('userName');
+                    this.$cookie.remove('token');
+                    this.$router.push({ name: '登录' });
+                }else {
+                    this.$Message.error(data.data.msg);
                 }
-                //清空cookie
-                this.$cookie.remove('token');
-                this.$cookie.remove('refreshToken');
-                this.$cookie.remove('tokenTime');
-                this.$cookie.remove('dssap');
-                this.$router.push({
-                    path:'/login'
-                });
+            }).catch(() => {
+                this.$Message.error('退出失败');
+                return;
             });
-        }
+        },
     }
 };
 </script>

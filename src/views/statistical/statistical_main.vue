@@ -200,8 +200,8 @@ export default {
             this.paging (this.data,this.page,this.size);
         }
     },
-        /**
-     * 监听搜索条件是按昨天还是月份
+    /**
+     * 监听搜索条件是按航班号还是按起降城市
      */
     watch: {
         searchValue: function () {

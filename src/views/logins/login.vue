@@ -45,9 +45,10 @@ export default {
         return {
             memoryPassword: true, //记住密码
             userName:'',
+            token: 1,
             formInline: {
                 telPhone: '18223070173',
-                password: '111111'
+                password: 'ltf@123456'
             },
             ruleInline: {
                 telPhone: [
@@ -62,24 +63,24 @@ export default {
         };
     },
     created(){
-        // this.memoryPassword = this.$cookie.getJSON('remember');
-        // if(this.$cookie.getJSON('remember')){
-        //     this.formLogin.userName = this.$cookie.getJSON('userName') || '';
-        //     this.formLogin.password = this.$cookie.getJSON('dssap') || '';
-        // }
+
     },
     methods: {
         handleSubmit(name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
-                    this.formInline.password = md5(this.formInline.password);
+                    const params = {
+                        telPhone : this.formInline.telPhone,
+                        password : md5(this.formInline.password)
+                    };
                     this.$axios
-                        .post('api/user/login',this.formInline)
+                        .post('api/user/login',params)
                         .then(data => {
                             console.log(data.data.code);
                             if (data.data.code == 200) {
                                 this.userName = data.data.data.userName;
                                 this.$cookie.set('userName',this.userName,{  expires:1/24*12 });
+                                this.$cookie.set('token',this.token,{  expires:1/24*12 });
                                 this.$router.push({ name: '数据' });
                             }else {
                                 this.$Message.error(data.data.msg);
