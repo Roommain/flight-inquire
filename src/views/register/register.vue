@@ -8,10 +8,17 @@
                 <Input size="large" v-model="formValidate.userName" placeholder="请输入你的用户名"></Input>
             </FormItem>
             <FormItem label="E-mail" prop="email">
-                <Input size="large" v-model="formValidate.email" placeholder="请输入你的e-mail"></Input>
+                <AutoComplete
+                    v-model="formValidate.email"
+                    @on-search="emailHandleSearch"
+                    placeholder="请输入邮箱"
+                    size="large">
+                    <Option v-for="item in emailData" :value="item" :key="item">{{ item }}</Option>
+                </AutoComplete>
+                <!-- <Input size="large" v-model="formValidate.email" placeholder="请输入你的e-mail"></Input> -->
             </FormItem>
             <FormItem label="手机号码" prop="telPhone">
-                <Input size="large" v-model="formValidate.telPhone" placeholder="请输入你的手机号码"></Input>
+                <Input size="large" v-model="formValidate.telPhone" maxlength="11" placeholder="请输入你的手机号码"></Input>
             </FormItem>
             <FormItem label="密码" prop="password">
                 <Input type="password" size="large" v-model="formValidate.password" placeholder="请输入你的密码"></Input>
@@ -42,6 +49,7 @@ export default {
           }
       };
       return {
+          emailData: [],
           formValidate: {
               userName: '',
               email: '',
@@ -54,7 +62,7 @@ export default {
               ],
               email: [
                   { required: true, message: '请输入你的邮箱', trigger: 'blur' },
-                  { type: 'email', message: '请正确输入邮箱', trigger: 'blur' }
+                  { type: 'email', message: '请正确输入邮箱', trigger: 'change' }
               ],
               telPhone: [
                   { required: true, message: '请输入你的手机号码', trigger: 'blur' },
@@ -68,30 +76,37 @@ export default {
       }
   },
   methods: {
-      handleSubmit (name) {
-          this.$refs[name].validate((valid) => {
-                if (valid) {
-                    this.formValidate.password = md5(this.formValidate.password);
-                    this.$axios
-                        .post('api/user/register',this.formValidate)
-                        .then(data => {
-                            console.log(data);
-                            if (data.data.code == 200) {
-                                this.$Message.success('注册成功，前往登录');
-                                this.$router.push({ name: '登录' });
-                                
-                            }else {
-                                this.$Message.error(data.data.msg);
-                            }
-                        });
-                } else {
-                    this.$Message.error('Fail!');
-                }
-          })
-      },
-      handleReset (name) {
-          this.$refs[name].resetFields();
-      }
+        handleSubmit (name) {
+            this.$refs[name].validate((valid) => {
+                    if (valid) {
+                        this.formValidate.password = md5(this.formValidate.password);
+                        this.$axios
+                            .post('api/user/register',this.formValidate)
+                            .then(data => {
+                                console.log(data);
+                                if (data.data.code == 200) {
+                                    this.$Message.success('注册成功，前往登录');
+                                    this.$router.push({ name: '登录' });
+                                    
+                                }else {
+                                    this.$Message.error(data.data.msg);
+                                }
+                            });
+                    } else {
+                        this.$Message.error('Fail!');
+                    }
+            })
+        },
+        handleReset (name) {
+            this.$refs[name].resetFields();
+        },
+        emailHandleSearch (value) {
+            this.emailData = !value || value.indexOf('@') >= 0 ? [] : [
+                value + '@qq.com',
+                value + '@foxmail.com',
+                value + '@163.com'
+            ];
+        }
   }
 }
 </script>

@@ -5,7 +5,7 @@
                 <h1>飞途登录</h1>
                 <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline" inline>
                     <FormItem prop="telPhone">
-                        <Input type="text" size="large" v-model="formInline.telPhone" placeholder="手机号码" style="width: 300px">
+                        <Input type="text" size="large" v-model="formInline.telPhone" maxlength="11" placeholder="手机号码" style="width: 300px">
                             <Icon type="ios-person-outline" slot="prepend"></Icon>
                         </Input>
                     </FormItem>
@@ -48,7 +48,7 @@ export default {
             token: 1,
             formInline: {
                 telPhone: '18223070173',
-                password: 'ltf@123456'
+                password: '070173'
             },
             ruleInline: {
                 telPhone: [
@@ -76,7 +76,6 @@ export default {
                     this.$axios
                         .post('api/user/login',params)
                         .then(data => {
-                            console.log(data.data.code);
                             if (data.data.code == 200) {
                                 this.userName = data.data.data.userName;
                                 this.$cookie.set('userName',this.userName,{  expires:1/24*12 });

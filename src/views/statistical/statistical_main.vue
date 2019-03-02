@@ -9,9 +9,27 @@
                 <Input v-show="flightNumShow" v-model="flightValue" prefix="ios-plane" size="large" placeholder="请输入航班号" style="width: auto" />
                 <!-- 两地之间查询 -->
                 <span v-show="cityShow">
-                    <Input prefix="ios-pin" v-model="departValue" size="large" placeholder="出发城市" style="width: 120px" />
-                        <span class="change"><Icon type="ios-plane-outline" /></span>
-                    <Input prefix="ios-pin" v-model="arriveValue" size="large" placeholder="到达城市" style="width: 120px" />     
+                    <AutoComplete
+                        v-model="departValue"
+                        class="autocomplete"
+                        icon="ios-pin"
+                        :data="cityData"
+                        :filter-method="filterMethod"
+                        placeholder="出发地"
+                        style="width:120px">
+                    </AutoComplete>
+                    <!-- <Input prefix="ios-pin" v-model="departValue" size="large" placeholder="出发城市" style="width: 120px" /> -->
+                        <span class="change" @click="transform"><Icon type="md-swap" /></span>
+                    <!-- <Input prefix="ios-pin" v-model="arriveValue" size="large" placeholder="到达城市" style="width: 120px" />   -->
+                    <AutoComplete
+                        v-model="arriveValue"
+                        class="autocomplete"
+                        icon="ios-pin"
+                        :data="cityData"
+                        :filter-method="filterMethod"
+                        placeholder="目的地"
+                        style="width:120px">
+                    </AutoComplete>
                 </span>
                 <DatePicker type="date" size="large" :options="options" placeholder="请选择日期" style="width: 220px"></DatePicker>
                 <Button type="primary" @click="search">航班查询</Button>
@@ -30,127 +48,127 @@
 export default {
     data() {
         return {
-                // theme1: 'dark',
-                loading: true,
-                searchValue: '按航班号搜索',
-                flightNumShow: true,
-                cityShow: false,
-                tableHeight: '',
-                flightValue: '',
-                departValue: '',
-                arriveValue: '',
-                pageData:[],
-                pantectTotalSize: 200,
-                page:1,
-                size:20,
-                
-                searchType: [
-                    {
-                        value: '按航班号搜索',
-                        label: '按航班号搜索',
-                    },
-                    {
-                        value: '按起降城市搜索',
-                        label: '按起降城市搜索',
-                    }
-                ],
-                options: {
-                    disabledDate (date) {
-                        return date && date.valueOf() < Date.now() - 86400000;
-                    }
+            cityData: ['重庆', '成都', '深圳'],
+            loading: true,
+            searchValue: '按航班号搜索',
+            flightNumShow: true,
+            cityShow: false,
+            tableHeight: '',
+            flightValue: '',
+            departValue: '',
+            arriveValue: '',
+            pageData:[],
+            pantectTotalSize: 200,
+            page:1,
+            size:20,
+            
+            searchType: [
+                {
+                    value: '按航班号搜索',
+                    label: '按航班号搜索',
                 },
-                columns: [
-                    {
-                        type: 'index',
-                        title: '序号',
-                        width: 80,
-                        align: 'center',
-                        tooltip:true,
-                    },
-                    {
-                        title: '航班信息',
-                        key: 'flightInformation',
-                        align: 'center',
-                        tooltip:true,
-                    },
-                    {
-                        title: '起飞时间',
-                        key: 'takeOffTime',
-                        align: 'center',
-                        tooltip:true,
-                    },
-                    {
-                        title: '出发地',
-                        key: 'placeOfDeparture',
-                        align: 'center',
-                        tooltip:true,
-                    },
-                    {
-                        title: '到达时间',
-                        key: 'arrivalTime',
-                        align: 'center',
-                        tooltip:true,
-                    },
-                    {
-                        title: '到达地',
-                        key: 'placeOfDestination',
-                        align: 'center',
-                        tooltip:true,
-                    },
-                    {
-                        title: '准点率',
-                        key: 'onTimeRate',
-                        align: 'center',
-                        tooltip:true,
-                    },
-                    {
-                        title: '状态',
-                        key: 'status',
-                        align: 'center',
-                        tooltip:true,
-                    },
-                    {
-                        title: '操作',
-                        key: 'action',
-                        width: 100,
-                        align: 'center',
-                        // fixed: 'right',
-                        render: (h, params) => {
-                            return h('div', [
-                                h(
-                                    'Button',
-                                    {
-                                        props: {
-                                            type: 'primary',
-                                            size: 'small'
-                                        },
-                                        style: {
-                                            marginRight: '5px'
-                                        },
-                                        on: {
-                                            click: () => {
-                                                // this.particulars(params);
-                                            }
-                                        }
+                {
+                    value: '按起降城市搜索',
+                    label: '按起降城市搜索',
+                }
+            ],
+            options: {
+                disabledDate (date) {
+                    return date && date.valueOf() < Date.now() - 86400000;
+                }
+            },
+            columns: [
+                // {
+                //     type: 'index',
+                //     title: '序号',
+                //     width: 80,
+                //     align: 'center',
+                //     tooltip:true,
+                // },
+                {
+                    title: '航班信息',
+                    key: 'flightInformation',
+                    align: 'center',
+                    tooltip:true,
+                },
+                {
+                    title: '起飞时间',
+                    key: 'takeOffTime',
+                    align: 'center',
+                    tooltip:true,
+                },
+                {
+                    title: '出发地',
+                    key: 'placeOfDeparture',
+                    align: 'center',
+                    tooltip:true,
+                },
+                {
+                    title: '到达时间',
+                    key: 'arrivalTime',
+                    align: 'center',
+                    tooltip:true,
+                },
+                {
+                    title: '到达地',
+                    key: 'placeOfDestination',
+                    align: 'center',
+                    tooltip:true,
+                },
+                {
+                    title: '准点率',
+                    key: 'onTimeRate',
+                    align: 'center',
+                    tooltip:true,
+                },
+                {
+                    title: '状态',
+                    key: 'status',
+                    align: 'center',
+                    tooltip:true,
+                },
+                {
+                    title: '操作',
+                    key: 'action',
+                    width: 100,
+                    align: 'center',
+                    // fixed: 'right',
+                    render: (h, params) => {
+                        return h('div', [
+                            h(
+                                'Button',
+                                {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
                                     },
-                                    '详情'
-                                )
-                            ]);
-                        }
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            // this.particulars(params);
+                                        }
+                                    }
+                                },
+                                '详情'
+                            )
+                        ]);
                     }
-                ],
-                data: [
-                    {
-                        flightInformation: '国航CA155',
-                        takeOffTime: '09:45',
-                        placeOfDeparture: '重庆',
-                        arrivalTime: '11:53',
-                        placeOfDestination: '北京',
-                        onTimeRate : '100%',
-                        status : '到达'
-                    }
-                ]
-            }
+                }
+            ],
+            data: [
+                {
+                    flightInformation: '国航CA155',
+                    takeOffTime: '09:45',
+                    placeOfDeparture: '重庆',
+                    arrivalTime: '11:53',
+                    placeOfDestination: '北京',
+                    onTimeRate : '100%',
+                    status : '到达'
+                }
+            ]
+        }
     },
     created() {
         this.$axios
@@ -163,6 +181,12 @@ export default {
             });
     },
     methods:{
+        filterMethod (value, option) {
+                return option.toUpperCase().indexOf(value.toUpperCase()) !== -1;
+        },
+        transform () {
+            [this.departValue,this.arriveValue] = [this.arriveValue,this.departValue];
+        },
         search () {
             console.log('点击了搜索');
             this.$router.push({ name: '数据' });
@@ -224,6 +248,9 @@ export default {
     background-color: rgba(255, 255, 255, 0.3);
     .filtrate {
         text-align: center;
+        .autocomplete {
+            text-align: left;
+        }
     }
     .change {
         margin: 0 10px;
