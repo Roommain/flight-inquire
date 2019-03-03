@@ -18,7 +18,7 @@
                 <!-- <Input size="large" v-model="formValidate.email" placeholder="请输入你的e-mail"></Input> -->
             </FormItem>
             <FormItem label="手机号码" prop="telPhone">
-                <Input size="large" v-model="formValidate.telPhone" maxlength="11" placeholder="请输入你的手机号码"></Input>
+                <Input size="large" v-model="formValidate.telPhone" :maxlength="11" placeholder="请输入你的手机号码"></Input>
             </FormItem>
             <FormItem label="密码" prop="password">
                 <Input type="password" size="large" v-model="formValidate.password" placeholder="请输入你的密码"></Input>

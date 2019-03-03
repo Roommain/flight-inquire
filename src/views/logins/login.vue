@@ -5,7 +5,7 @@
                 <h1>飞途登录</h1>
                 <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline" inline>
                     <FormItem prop="telPhone">
-                        <Input type="text" size="large" v-model="formInline.telPhone" maxlength="11" placeholder="手机号码" style="width: 300px">
+                        <Input type="text" size="large" v-model="formInline.telPhone" :maxlength="11" placeholder="手机号码" style="width: 300px">
                             <Icon type="ios-person-outline" slot="prepend"></Icon>
                         </Input>
                     </FormItem>

@@ -37,6 +37,7 @@
 
 
 <script>
+import interlayer from '@/interlayer/interlayer'
 export default {
     data() {
         return {
@@ -44,8 +45,10 @@ export default {
         };
     },
     created(){
-        // this.getUserMessage();
-        this.userName = this.$cookie.get('userName') || '';
+        this.getUserName();
+        interlayer.$on('active', item => {
+            this.userName = item;
+        })
     },
     methods:{
         /**
@@ -67,6 +70,12 @@ export default {
                 return;
             });
         },
+        /**
+         * 获取cookie，用户昵称
+         */
+        getUserName () {
+            this.userName = this.$cookie.get('userName') || '';
+        }
         
     }
 };

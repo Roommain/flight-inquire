@@ -13,7 +13,7 @@
             </Steps>
             <Form class="form" ref="formInlinePhone" :model="formInlinePhone" :rules="ruleInlinePhone" v-show="phoneShow" inline>
                 <FormItem prop="telPhone">
-                    <Input type="text" size="large" v-model="formInlinePhone.telPhone" maxlength="11" placeholder="手机号码" style="width: 300px"></Input>
+                    <Input type="text" size="large" v-model="formInlinePhone.telPhone" :maxlength="11" placeholder="手机号码" style="width: 300px"></Input>
                 </FormItem>
                 <br>
                 <FormItem>

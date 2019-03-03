@@ -49,10 +49,12 @@
 </template>
 
 <script>
+import interlayer from '@/interlayer/interlayer'
 export default {
     data() {
         return {
             emailData: [],
+            // userName: 'aaa',
             cityData: ['重庆', '成都', '上海', '北京'],
             formItem: {
                 userName: '',
@@ -95,6 +97,7 @@ export default {
                     this.$Message.success(data.data.msg);
                     this.requestInformation();
                     this.$cookie.set('userName',this.formItem.userName,{  expires:1/24*12 });
+                    interlayer.$emit('active',this.formItem.userName);
                 }else {
                     this.$Message.error(data.data.msg);
                 }
