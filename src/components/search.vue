@@ -32,7 +32,7 @@
                     style="width:120px">
                 </AutoComplete>
             </span>
-            <DatePicker type="date" size="large" :options="options" placeholder="请选择日期" style="width: 220px"></DatePicker>
+            <DatePicker type="date" v-model="datevalue" size="large" :options="options" placeholder="请选择日期" style="width: 220px"></DatePicker>
             <Button type="primary" @click="search">航班查询</Button>
         </div>
     </Card>
@@ -43,19 +43,13 @@ export default {
     data() {
         return {
             cityData: ['重庆', '成都', '深圳'],
-            loading: true,
             searchValue: '按航班号搜索',
             flightNumShow: true,
             cityShow: false,
-            tableHeight: '',
             flightValue: '',
             departValue: '',
             arriveValue: '',
-            pageData:[],
-            pantectTotalSize: 200,
-            page:1,
-            size:20,
-            
+            datevalue: '',
             searchType: [
                 {
                     value: '按航班号搜索',
@@ -74,6 +68,8 @@ export default {
         }
     },
     created() {
+        var day = new Date();
+        this.datevalue = day;
     },
     methods:{
         filterMethod (value, option) {
@@ -83,7 +79,11 @@ export default {
             [this.departValue,this.arriveValue] = [this.arriveValue,this.departValue];
         },
         search () {
-            this.$router.push({ name: '数据' });
+            if(this.flightValue != '' || (this.departValue != '' && this.arriveValue != '')) {
+                return this.$router.push({ name: '数据' });
+            }
+            // this.$router.push({ name: '数据' });
+            this.$Message.error('请输入搜索条件');
         },
     },
     /**
