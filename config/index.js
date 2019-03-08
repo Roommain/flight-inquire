@@ -16,7 +16,14 @@ module.exports = {
         target: 'http://127.0.0.1:9190',  //目标接口域名
         changeOrigin: true,  //是否跨域
         pathRewrite: {
-          '^/api': ''   //重写接口
+          '^/api': '/'   //重写接口
+        }
+      },
+      '/wea': {
+        target: 'http://v.juhe.cn',  //目标接口域名
+        changeOrigin: true,  //是否跨域
+        pathRewrite: {
+          '^/wea': '/'   //重写接口
         }
       },
     },

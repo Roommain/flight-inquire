@@ -43,12 +43,13 @@ export default {
             }
         };
         return {
-            memoryPassword: true, //记住密码
+            localStorageMemory: '',
+            memoryPassword: false, //记住密码
             userName:'',
             token: 1,
             formInline: {
-                telPhone: '18223070173',
-                password: '070173'
+                telPhone: '',
+                password: ''
             },
             ruleInline: {
                 telPhone: [
@@ -63,12 +64,13 @@ export default {
         };
     },
     created(){
-
+        this.getlocalStorage();
     },
     methods: {
         handleSubmit(name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
+                    this.rememberValue();
                     const params = {
                         telPhone : this.formInline.telPhone,
                         password : md5(this.formInline.password)
@@ -79,6 +81,7 @@ export default {
                             if (data.data.code == 200) {
                                 this.userName = data.data.data.userName;
                                 this.$cookie.set('userName',this.userName,{  expires:1/24*12 });
+                                this.$cookie.set('isAdmin',data.data.data.isAdmin,{  expires:1/24*12 });
                                 this.$cookie.set('token',this.token,{  expires:1/24*12 });
                                 this.$router.push({ name: '数据' });
                             }else {
@@ -97,8 +100,29 @@ export default {
          * 记住密码
          */
         rememberValue(value){
-            this.$cookie.set('remember',value);
+            if(this.memoryPassword == true) {
+                localStorage.setItem('telPhone',this.formInline.telPhone);
+                localStorage.setItem('password',this.formInline.password);
+                localStorage.setItem('memoryPassword','true');
+            }else {
+                localStorage.setItem('password','');
+                localStorage.setItem('memoryPassword','false');
+            }
         },
+        /**
+         * 获取记住的账号密码
+         */
+        getlocalStorage () {
+            this.formInline.telPhone = localStorage.getItem('telPhone');
+            this.formInline.password = localStorage.getItem('password');
+            this.localStorageMemory = localStorage.getItem('memoryPassword');
+            if (this.localStorageMemory == 'true') {
+                this.memoryPassword = true;
+            }else {
+                this.memoryPassword = false;
+            }
+        },
+
     }
 
 };
@@ -106,10 +130,16 @@ export default {
 
 
 <style lang="less" scoped>
+// @keyframes bg
+// {
+// from {background: url('../../assets/images/bg.jpg') no-repeat center/cover;}
+// to {background: url('../../assets/images/bg2.jpg') no-repeat center/cover;}
+// }
 .login {
     width: 100%;
     height: 100%;
     font-size: 16px;
+    // animation: bg infinite 10s linear alternate;
     background: url('../../assets/images/bg.jpg') no-repeat center/cover;
     .login-main {
         width: 100%;

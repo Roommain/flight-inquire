@@ -43,20 +43,12 @@ const router = new Router({
           component: resolve => require(['@/views/statistical/statistical_main'], resolve),
         },
         {
-          path: '/changePassword',
-          name: '改变密码',
+          path: '/particulars',
+          name: '航班详情',
           meta: {
             permissions: true,
           },
-          component: resolve => require(['@/views/user_message/userChangePassword'], resolve),
-        },
-        {
-          path: '/userinfo',
-          name: '用户信息',
-          meta: {
-            permissions: true,
-          },
-          component: resolve => require(['@/views/user_message/userinfo'], resolve),
+          component: resolve => require(['@/views/statistical/particulars'], resolve),
         },
         {
           path: '/attention',
@@ -68,11 +60,64 @@ const router = new Router({
         },
         {
           path: '/flightManage',
-          name: '飞机航班管理',
+          name: '航班管理',
+          redirect: '/addFlight',
           meta: {
             permissions: true,
           },
           component: resolve => require(['@/views/flight-manage/flightManage'], resolve),
+          children:[
+            {
+              path: '/addFlight',
+              name: '添加航班',
+              meta: {
+                permissions: true,
+              },
+              component: resolve => require(['@/views/flight-manage/addFlight'], resolve),
+            },
+            {
+              path: '/updateFlight',
+              name: '修改航班',
+              meta: {
+                permissions: true,
+              },
+              component: resolve => require(['@/views/flight-manage/updateFlight'], resolve),
+            },
+            {
+              path: '/deleteFlight',
+              name: '删除航班',
+              meta: {
+                permissions: true,
+              },
+              component: resolve => require(['@/views/flight-manage/deleteFlight'], resolve),
+            },
+          ]
+        },
+        {
+          path: '/message_main',
+          name: '个人中心',
+          meta: {
+            permissions: true,
+          },
+          component: resolve => require(['@/views/user_message/message_main'], resolve),
+          children:[
+            {
+              path: '/changePassword',
+              name: '修改密码',
+              meta: {
+                permissions: true,
+              },
+              component: resolve => require(['@/views/user_message/userChangePassword'], resolve),
+            },
+            {
+              path: '/userinfo',
+              name: '我的信息',
+              meta: {
+                permissions: true,
+              },
+              component: resolve => require(['@/views/user_message/userinfo'], resolve),
+            },
+          ]
         },
       ]
     },

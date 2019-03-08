@@ -6,8 +6,8 @@
             </div>
             <nav class="main-nav">
                 <router-link tag="li" to="main"><Icon type="md-home"/>&nbsp;&nbsp;首页</router-link>
-                <router-link tag="li" to="attention"><Icon type="md-heart-outline"/>&nbsp;&nbsp;关注我们</router-link>
-                <router-link tag="li" to="flightManage"><Icon type="ios-create-outline"/>&nbsp;&nbsp;航班管理</router-link>
+                <router-link tag="li" to="attention"><Icon type="md-heart-outline"/>&nbsp;&nbsp;关注航班</router-link>
+                <router-link v-show="adminShow" tag="li" to="flightManage"><Icon type="ios-create-outline"/>&nbsp;&nbsp;航班管理</router-link>
             </nav>
             <div class="main-user-message">
                 <!-- <Icon type="md-notifications" /> -->
@@ -19,7 +19,7 @@
                     </a>
                     <DropdownMenu slot="list">
                         <DropdownItem>
-                            <router-link to="userinfo">我的信息</router-link>
+                            <router-link to="userinfo" >我的信息</router-link>
                         </DropdownItem>
                         <DropdownItem>
                             <router-link to="changePassword">修改密码</router-link>
@@ -42,6 +42,8 @@ export default {
     data() {
         return {
             userName:'',
+            isAdmin: '',
+            adminShow: false,
         };
     },
     created(){
@@ -75,6 +77,12 @@ export default {
          */
         getUserName () {
             this.userName = this.$cookie.get('userName') || '';
+            this.isAdmin = this.$cookie.get('isAdmin') || '';
+            if(this.isAdmin == '1'){
+                this.adminShow = true;
+            }else {
+                this.adminShow = false;
+            }
         }
         
     }
@@ -95,11 +103,11 @@ export default {
         display: block;
         .main-logo {
             float: left;
-            width: 260px;
+            width: 360px;
             padding: 0 51px;
             height: 66px;
             line-height: 66px;
-            text-align: center;
+            text-align: left;
             .logo {
                 height: 50px;
                 margin-top: 8px;
@@ -116,13 +124,14 @@ export default {
             overflow: hidden;
             height: 100%;
             line-height: 66px;
+            // margin-left: 50px;
             > li {
                 height: 100%;
-                padding: 0 20px;
+                padding: 0 40px;
                 color: rgba(209, 209, 209, 1);
                 float: left;
                 font-size: 14px;
-                width: 120px;
+                width: 160px;
                 cursor: pointer;
             }
             > li:hover {
@@ -161,10 +170,6 @@ export default {
             }
         }
     }
-    // .main-iview {
-    //     display: block;
-    //     height: 100%;
-    // }
 }
 </style>
 

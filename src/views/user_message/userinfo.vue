@@ -1,7 +1,7 @@
 <template>
     <div class="userinfo">
-        <Card class="card">
-            <h1 class="title">个人资料</h1>
+        <div class="card">
+            <!-- <h1 class="title">个人资料</h1> -->
             <div>
                 <Form class="form" :model="formItem" :label-width="100">
                     <FormItem label="用户昵称">
@@ -44,7 +44,7 @@
                     </FormItem>
                 </Form>
             </div>
-        </Card> 
+        </div> 
     </div>
 </template>
 

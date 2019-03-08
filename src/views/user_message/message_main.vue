@@ -2,7 +2,7 @@
     <div class="user-message">
         <div class="user-message-header utils-menu-header-style">
             <h2 class="user-header">
-                <span>航班信息</span>
+                <span>我的个人</span>
             </h2>
             <div class="user-menu-bar">
                 <Menu
@@ -10,9 +10,8 @@
                     :active-name="activeName"
                     width="320px"
                 >
-                    <MenuItem name="/addFlight"><Icon type="md-add-circle" />&nbsp;添加航班</MenuItem>
-                    <MenuItem name="/updateFlight"><Icon type="ios-create" />&nbsp;修改航班</MenuItem>
-                    <MenuItem name="/deleteFlight"><Icon type="ios-trash" />&nbsp;删除航班</MenuItem>
+                    <MenuItem name="/userinfo"><Icon type="md-contact" />&nbsp;我的信息</MenuItem>
+                    <MenuItem name="/changePassword"><Icon type="md-lock" />&nbsp;修改密码</MenuItem>
                 </Menu>
             </div>
         </div>
@@ -29,7 +28,7 @@
 export default {
     data() {
         return {
-            activeName:'/addFlight'
+            activeName:'/userinfo'
         };
     },
     created() {

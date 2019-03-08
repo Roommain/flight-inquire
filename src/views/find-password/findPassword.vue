@@ -178,20 +178,29 @@ export default {
 </script>
 
 <style lang="less" scoped>
+// @keyframes findbg
+// {
+// from {background: url('../../assets/images/bg.jpg') no-repeat center/cover;}
+// to {background: url('../../assets/images/bg2.jpg') no-repeat center/cover;}
+// }
 .find-password {
     width: 100%;
     height: 100%;
     font-size: 16px;
+    // animation: findbg infinite 10s linear alternate;
     background: url('../../assets/images/bg.jpg') no-repeat center/cover;
     .box {
         position: fixed;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        margin: auto;
-        width: 700px;
-        height: 400px;
+        // left: 0;
+        // top: 0;
+        // right: 0;
+        // bottom: 0;
+        // margin: auto;
+        left: 50%;
+        top: 20%;
+        margin-left: -350px;
+        width: 740px;
+        height: 340px;
         // border: 1px solid red;
         background-color: white;
         .title {

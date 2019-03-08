@@ -1,5 +1,5 @@
 <template>
-    <Card class="modify-password" data-automation="password">
+    <div class="modify-password" data-automation="password">
         <Form
             class="modify-password-form utils-from-location-style"
             data-automation="modifyPwdForm"
@@ -50,10 +50,11 @@
                     class="utils-save-btn"
                     type="primary"
                     @click="handleSubmit('modifyPwdForm')"
+                    style="width: 300px;height: 42px;"
                 >保存</Button>
             </FormItem>
         </Form>
-    </Card>
+    </div>
 </template>
 
 <script>

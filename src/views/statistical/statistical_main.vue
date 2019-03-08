@@ -1,13 +1,12 @@
 <template>
     <div class="statistical-main">
-        <Card class="card">
+        <search/>
+        <!-- <Card class="card">
             <div class="filtrate">
                 <Select v-model="searchValue" size="large" style="width:200px;">
                     <Option v-for="item in searchType" :value="item.value" :key="item.value">{{ item.label }}</Option>
                 </Select>
-                <!-- 航班号查询 -->
                 <Input v-show="flightNumShow" v-model="flightValue" prefix="ios-plane" size="large" placeholder="请输入航班号" style="width: auto" />
-                <!-- 两地之间查询 -->
                 <span v-show="cityShow">
                     <AutoComplete
                         v-model="departValue"
@@ -18,9 +17,7 @@
                         placeholder="出发地"
                         style="width:120px">
                     </AutoComplete>
-                    <!-- <Input prefix="ios-pin" v-model="departValue" size="large" placeholder="出发城市" style="width: 120px" /> -->
                         <span class="change" @click="transform"><Icon type="md-swap" /></span>
-                    <!-- <Input prefix="ios-pin" v-model="arriveValue" size="large" placeholder="到达城市" style="width: 120px" />   -->
                     <AutoComplete
                         v-model="arriveValue"
                         class="autocomplete"
@@ -34,7 +31,7 @@
                 <DatePicker type="date" size="large" :options="options" placeholder="请选择日期" style="width: 220px"></DatePicker>
                 <Button type="primary" @click="search">航班查询</Button>
             </div>
-        </Card>
+        </Card> -->
         <Card class="table">
             <Table stripe :loading="loading" :columns="columns" :data="pageData" :height="tableHeight"></Table>
             <div class="page">
@@ -45,7 +42,11 @@
 </template>
 
 <script>
+import Search from '@/components/search';
 export default {
+    components: {
+        Search,
+    },
     data() {
         return {
             cityData: ['重庆', '成都', '深圳'],
@@ -126,13 +127,68 @@ export default {
                     key: 'status',
                     align: 'center',
                     tooltip:true,
+                    render: (h, params) => {
+                        return h('div', [
+                            params.row.status === '计划' &&  h(
+                                'span',
+                                {
+                                    props: {
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px',
+                                        color: '#2d8cf0'
+                                    },
+                                },
+                                '计划' 
+                            ),
+                            params.row.status === '飞行' &&  h(
+                                'span',
+                                {
+                                    props: {
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px',
+                                        color: 'red'
+                                    },
+                                },
+                                '飞行' 
+                            ),
+                            params.row.status === '到达' &&  h(
+                                'span',
+                                {
+                                    props: {
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px',
+                                        color: '#19be6b'
+                                    },
+                                },
+                                '到达' 
+                            ),
+                            // h(
+                            //     'span',
+                            //     {
+                            //         props: {
+                            //             size: 'small'
+                            //         },
+                            //         style: {
+                            //             marginRight: '5px',
+                            //             color: 'green'
+                            //         },
+                            //     },
+                            //     '计划'
+                            // )
+                        ]);
+                    }
                 },
                 {
                     title: '操作',
                     key: 'action',
                     width: 100,
                     align: 'center',
-                    // fixed: 'right',
                     render: (h, params) => {
                         return h('div', [
                             h(
@@ -147,7 +203,7 @@ export default {
                                     },
                                     on: {
                                         click: () => {
-                                            // this.particulars(params);
+                                            this.particulars(params);
                                         }
                                     }
                                 },
@@ -222,6 +278,11 @@ export default {
             console.log(val);
             this.size = val;
             this.paging (this.data,this.page,this.size);
+        },
+        particulars (params) {
+            console.log('点击了详情');
+            console.log(params);
+            this.$router.push({ name: '航班详情' });
         }
     },
     /**

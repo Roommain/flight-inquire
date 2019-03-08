@@ -1,6 +1,6 @@
 <template>
-    <div class="attention">
-        关注航班
+    <div class="addflight">
+        添加航班
     </div>
 </template>
 
