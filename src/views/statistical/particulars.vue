@@ -2,7 +2,7 @@
     <div class="particulars">
         <search/>
         <Card class="card">
-            <p class="clearfloat"> <span class="particulars-flight">东方航空 MU5183</span> <span class="particulars-state">到达</span> </p>
+            <p class="clearfloat"> <span class="particulars-flight">东方航空 MU5183</span><span class="particulars-state">到达</span> </p>
             <div class="path">
                 <!-- <Progress :percent="45" status="active" /> -->
                 <div class="progress">
@@ -62,14 +62,20 @@
                 </ul>
             </div>
         </Card>
+        <div class="attention">
+            <Button size="large" @click="attentionSubmit" type="primary" style="width: 100%;height: 42px;">关注</Button>
+        </div>
+        <Footer/>
     </div>
 </template>
 
 <script>
 import Search from '@/components/search';
+import Footer from '@/components/footer';
 export default {
     components: {
         Search,
+        Footer,
     },
     data() {
         return {
@@ -81,19 +87,6 @@ export default {
     },
     methods: {
         weather () {
-            // let formData = new FormData()
-            // formData.append('cityname', this.cityname)
-
-            // const params = {
-            //     cityname : this.cityname,
-            //     dtype: 'json',
-            //     format: 1,
-            //     key: 'db56c2d4874ec941e15710323df153e4'
-            // };
-            // let config = {
-            // headers: ("Access-Control-Allow-Origin：http://v.juhe.cn/"),
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-            // }
             this.$axios.get('/wea/weather/index?key=db56c2d4874ec941e15710323df153e4&cityname='+this.cityname)
             .then(data => {
                 console.log(data);
@@ -196,5 +189,7 @@ export default {
     }
     
 }
-
+.attention {
+    margin: 10px 50px;
+}
 </style>

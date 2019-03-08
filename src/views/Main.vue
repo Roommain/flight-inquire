@@ -7,13 +7,14 @@
             <nav class="main-nav">
                 <router-link tag="li" to="main"><Icon type="md-home"/>&nbsp;&nbsp;首页</router-link>
                 <router-link tag="li" to="attention"><Icon type="md-heart-outline"/>&nbsp;&nbsp;关注航班</router-link>
+                <router-link tag="li" to="weather"><Icon type="md-cloud" />&nbsp;&nbsp;了解天气</router-link>
                 <router-link v-show="adminShow" tag="li" to="flightManage"><Icon type="ios-create-outline"/>&nbsp;&nbsp;航班管理</router-link>
             </nav>
             <div class="main-user-message">
                 <!-- <Icon type="md-notifications" /> -->
                 <Icon type="md-person" />
                 <Dropdown trigger="hover">
-                    <a href="javascript:void(0)">
+                    <a href="javascript:void(0)" @click="login">
                         {{userName || '登录/注册'}}
                         <Icon type="ios-arrow-down"/>
                     </a>
@@ -54,6 +55,14 @@ export default {
     },
     methods:{
         /**
+         * 登录
+         */
+        login() {
+            if(this.userName == ''){
+                this.$router.push({ name: '登录' });
+            }
+        },
+        /**
          * 登出
          */
         logout() {
@@ -63,7 +72,9 @@ export default {
                 if (data.data.code == 200) {
                     this.$cookie.remove('userName');
                     this.$cookie.remove('token');
-                    this.$router.push({ name: '登录' });
+                    this.$cookie.remove('isAdmin');
+                    this.$router.push({ name: '首页' });
+                    this.userName = this.$cookie.get('userName') || '';
                 }else {
                     this.$Message.error(data.data.msg);
                 }
@@ -97,6 +108,7 @@ export default {
         list-style:none; 
     }
     .header {
+        width: 100%;
         padding-right:30px;
         height: 66px;
         background-color: #444c58;

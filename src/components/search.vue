@@ -12,6 +12,7 @@
                     v-model="departValue"
                     class="autocomplete"
                     icon="ios-pin"
+                    size="large"
                     :data="cityData"
                     :filter-method="filterMethod"
                     placeholder="出发地"
@@ -24,6 +25,7 @@
                     v-model="arriveValue"
                     class="autocomplete"
                     icon="ios-pin"
+                    size="large"
                     :data="cityData"
                     :filter-method="filterMethod"
                     placeholder="目的地"
@@ -81,7 +83,6 @@ export default {
             [this.departValue,this.arriveValue] = [this.arriveValue,this.departValue];
         },
         search () {
-            console.log('点击了搜索');
             this.$router.push({ name: '数据' });
         },
     },

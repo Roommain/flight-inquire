@@ -83,7 +83,7 @@ export default {
                                 this.$cookie.set('userName',this.userName,{  expires:1/24*12 });
                                 this.$cookie.set('isAdmin',data.data.data.isAdmin,{  expires:1/24*12 });
                                 this.$cookie.set('token',this.token,{  expires:1/24*12 });
-                                this.$router.push({ name: '数据' });
+                                this.$router.push({name: '首页'});
                             }else {
                                 this.$Message.error(data.data.msg);
                             }
@@ -130,16 +130,10 @@ export default {
 
 
 <style lang="less" scoped>
-// @keyframes bg
-// {
-// from {background: url('../../assets/images/bg.jpg') no-repeat center/cover;}
-// to {background: url('../../assets/images/bg2.jpg') no-repeat center/cover;}
-// }
 .login {
     width: 100%;
     height: 100%;
     font-size: 16px;
-    // animation: bg infinite 10s linear alternate;
     background: url('../../assets/images/bg.jpg') no-repeat center/cover;
     .login-main {
         width: 100%;

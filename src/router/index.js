@@ -8,7 +8,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/login'
+      redirect: '/mainShow'
     },
     {
       path: '/login',
@@ -28,12 +28,17 @@ const router = new Router({
     {
       path: '/main',
       name: 'main',
-      meta: {
-        permissions: true,
-      },
+      // meta: {
+      //   permissions: true,
+      // },
       component: resolve => require(['@/views/Main'], resolve),
-      redirect: '/statistical',
+      redirect: '/mainShow',
       children:[
+        {
+          path: '/mainShow',
+          name: '首页',
+          component: resolve => require(['@/views/mainShow/mainShow'], resolve),
+        },
         {
           path: '/statistical',
           name: '数据',
@@ -52,11 +57,16 @@ const router = new Router({
         },
         {
           path: '/attention',
-          name: '关注我们',
+          name: '关注航班',
           meta: {
             permissions: true,
           },
           component: resolve => require(['@/views/attention/attention'], resolve),
+        },
+        {
+          path: '/weather',
+          name: '了解天气',
+          component: resolve => require(['@/views/weather/weather'], resolve),
         },
         {
           path: '/flightManage',
