@@ -1,8 +1,8 @@
 <template>
     <div class="login">
         <div class="login-main">
-            <Card class="card">
-                <h1>飞途登录</h1>
+            <div class="card">
+                <!-- <h1>飞途登录</h1> -->
                 <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline" inline>
                     <FormItem prop="telPhone">
                         <Input type="text" size="large" v-model="formInline.telPhone" :maxlength="11" placeholder="手机号码" style="width: 300px">
@@ -22,11 +22,13 @@
                         <Button class="login-button" type="primary" @click="handleSubmit('formInline')" style="width: 300px">登录</Button>
                     </FormItem>
                     <div class="login-register">
-                        <router-link class="orget-the-password" to="findPassword" tag="span">忘记密码</router-link>
-                        <router-link class="quick-registration" to="register" tag="span">快速注册</router-link>
+                        <!-- <router-link class="orget-the-password" to="findPassword" tag="span">忘记密码</router-link>
+                        <router-link class="quick-registration" to="register" tag="span">快速注册</router-link> -->
+                        <span class="orget-the-password" @click="findPassword">忘记密码</span>
+                        <span class="quick-registration" @click="registerSubmit">快速注册</span>
                     </div>
                 </Form>
-            </Card>   
+            </div>   
         </div>
     </div>
 </template>
@@ -83,7 +85,8 @@ export default {
                                 this.$cookie.set('userName',this.userName,{  expires:1/24*12 });
                                 this.$cookie.set('isAdmin',data.data.data.isAdmin,{  expires:1/24*12 });
                                 this.$cookie.set('token',this.token,{  expires:1/24*12 });
-                                this.$router.push({name: '首页'});
+                                this.closeLogin();
+                                // this.$router.push({name: '首页'});
                             }else {
                                 this.$Message.error(data.data.msg);
                             }
@@ -95,6 +98,15 @@ export default {
                     this.$Message.error('账号密码有误');
                 }
             })
+        },
+        registerSubmit () {
+            this.$emit('register-change');
+        },
+        findPassword () {
+            this.$emit('findPassword-change');
+        },
+        closeLogin () {
+            this.$emit('closeLogin-change',this.userName);
         },
         /**
          * 记住密码
@@ -131,29 +143,12 @@ export default {
 
 <style lang="less" scoped>
 .login {
-    width: 100%;
-    height: 100%;
-    font-size: 16px;
-    background: url('../../assets/images/bg.jpg') no-repeat center/cover;
-    .login-main {
-        width: 100%;
-        height: 100%; 
-    }
+
     .card {
-        position: fixed;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        margin: auto;
         width: 400px;
-        height: 360px;
         padding: 20px;
         h1 {
             font-size: 20px;
-        }
-        .form {
-            margin-top: 30px;
         }
         .login-button {
             height: 40px;

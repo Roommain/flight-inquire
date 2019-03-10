@@ -60,6 +60,7 @@
 <script>
 
 import md5 from 'js-md5';
+import interlayer from '@/interlayer/interlayer';
 export default {
     data() {
         const lengthlimit = '输入6至30个字符';
@@ -189,7 +190,9 @@ export default {
                 if (data.data.code == 200) {
                     this.$cookie.remove('userName');
                     this.$cookie.remove('token');
-                    this.$router.push({ name: '登录' });
+                    this.$cookie.remove('isAdmin');
+                    this.$router.push({ name: '首页' });
+                    interlayer.$emit('active');
                 }else {
                     this.$Message.error(data.data.msg);
                 }

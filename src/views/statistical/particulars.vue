@@ -94,6 +94,9 @@ export default {
                 this.$Message.error('请求失败');
                 return;
             });
+        },
+        attentionSubmit () {
+            this.$Message.success('关注成功');
         }
     },
 }

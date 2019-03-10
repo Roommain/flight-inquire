@@ -18,7 +18,7 @@
                         {{userName || '登录/注册'}}
                         <Icon type="ios-arrow-down"/>
                     </a>
-                    <DropdownMenu slot="list">
+                    <DropdownMenu slot="list" v-show="logoutShow">
                         <DropdownItem>
                             <router-link to="userinfo" >我的信息</router-link>
                         </DropdownItem>
@@ -32,25 +32,59 @@
                 </Dropdown>
             </div>
         </header>
+        <Modal
+            v-model="modalLogin"
+            title="登录"
+            :footer-hide=true
+            width=400>
+            <Login @register-change="registerChange" @closeLogin-change="getUserName" @findPassword-change="findPasswordChange"/>
+        </Modal>
+        <Modal
+            v-model="modalRegister"
+            title="快速注册"
+            :footer-hide=true
+            width=460>
+            <Register @registerSuccess-change="alertLogin"/>
+        </Modal>
+        <Modal
+            v-model="modalFindPassword"
+            title="找回密码"
+            :footer-hide=true
+            width=600>
+            <FindPassword/>
+        </Modal>
         <router-view class="main-iview"></router-view>
     </div>
 </template>
 
 
 <script>
+import Login from '@/views/logins/login'
+import FindPassword from '@/views/find-password/findPassword'
+import Register from '@/views/register/register'
 import interlayer from '@/interlayer/interlayer'
 export default {
+    components: {
+        Login,
+        Register,
+        FindPassword,
+    },
     data() {
         return {
+            modalLogin: false,
+            modalRegister: false,
+            modalFindPassword: false,
             userName:'',
             isAdmin: '',
             adminShow: false,
+            logoutShow: false,
         };
     },
     created(){
         this.getUserName();
         interlayer.$on('active', item => {
             this.userName = item;
+            this.getUserName();
         })
     },
     methods:{
@@ -59,7 +93,7 @@ export default {
          */
         login() {
             if(this.userName == ''){
-                this.$router.push({ name: '登录' });
+                this.modalLogin = true;
             }
         },
         /**
@@ -74,7 +108,7 @@ export default {
                     this.$cookie.remove('token');
                     this.$cookie.remove('isAdmin');
                     this.$router.push({ name: '首页' });
-                    this.userName = this.$cookie.get('userName') || '';
+                    this.getUserName();
                 }else {
                     this.$Message.error(data.data.msg);
                 }
@@ -87,6 +121,7 @@ export default {
          * 获取cookie，用户昵称
          */
         getUserName () {
+            this.modalLogin = false;
             this.userName = this.$cookie.get('userName') || '';
             this.isAdmin = this.$cookie.get('isAdmin') || '';
             if(this.isAdmin == '1'){
@@ -94,8 +129,29 @@ export default {
             }else {
                 this.adminShow = false;
             }
-        }
-        
+            if (this.userName != '') {
+                this.logoutShow = true;
+            }else {
+                this.logoutShow = false;
+            }
+        },
+        registerChange () {
+            this.modalLogin = false;
+            this.modalRegister = true;
+        },
+        findPasswordChange () {
+            this.modalLogin = false;
+            this.modalFindPassword = true;         
+        },
+        alertLogin () {
+            this.modalLogin = true;
+            this.modalRegister = false;
+            this.modalFindPassword = false;
+        },
+        // closeLogin (userName) {
+        //     this.modalLogin = false;
+        //     this.userName = userName;
+        // }
     }
 };
 </script>

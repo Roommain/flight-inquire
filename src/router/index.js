@@ -11,26 +11,8 @@ const router = new Router({
       redirect: '/mainShow'
     },
     {
-      path: '/login',
-      name: '登录',
-      component: resolve => require(['@/views/logins/login'], resolve),
-    },
-    {
-      path: '/findPassword',
-      name: '找回密码',
-      component: resolve => require(['@/views/find-password/findPassword'], resolve),
-    },
-    {
-      path: '/register',
-      name: '注册',
-      component: resolve => require(['@/views/register/register'], resolve),
-    },
-    {
       path: '/main',
       name: 'main',
-      // meta: {
-      //   permissions: true,
-      // },
       component: resolve => require(['@/views/Main'], resolve),
       redirect: '/mainShow',
       children:[
@@ -42,17 +24,17 @@ const router = new Router({
         {
           path: '/statistical',
           name: '数据',
-          meta: {
-            permissions: true,
-          },
+          // meta: {
+          //   permissions: true,
+          // },
           component: resolve => require(['@/views/statistical/statistical_main'], resolve),
         },
         {
           path: '/particulars',
           name: '航班详情',
-          meta: {
-            permissions: true,
-          },
+          // meta: {
+          //   permissions: true,
+          // },
           component: resolve => require(['@/views/statistical/particulars'], resolve),
         },
         {
@@ -166,9 +148,10 @@ router.beforeEach((to, from, next) => {
     if(token){
       next();
     }else{
-      next({
-        path:'/login'
-      })
+      // next({
+      //   path:'/',
+      // });
+      Vue.prototype.$Message.warning('请先登录');
     }
   }else{
     next();

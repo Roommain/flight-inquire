@@ -83,7 +83,7 @@ export default {
                 return this.$router.push({ name: '数据' });
             }
             // this.$router.push({ name: '数据' });
-            this.$Message.error('请输入搜索条件');
+            this.$Message.warning('请输入搜索条件');
         },
     },
     /**

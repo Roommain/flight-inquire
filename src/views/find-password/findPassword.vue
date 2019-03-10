@@ -1,10 +1,6 @@
 <template>
     <div class="find-password">
-        <Card class="box">
-            <Breadcrumb class="title">
-                <BreadcrumbItem to="/login">登录</BreadcrumbItem>
-                <BreadcrumbItem to="/findPassword">找回登录密码</BreadcrumbItem>
-            </Breadcrumb>
+        <div class="box">
             <Steps :current=current>
                 <Step title="输入账号" icon="ios-contact"></Step>
                 <Step title="输入邮箱" icon="ios-mail"></Step>
@@ -46,7 +42,7 @@
                 <Button class="again-button" type="primary" v-show="againShow" @click="againSubmit()" style="width: 100px">点我重新输入</Button>
                 <Button class="again-button" type="primary" v-show="loginShow" @click="loginSubmit()" style="width: 100px">点我前往登录</Button>
             </div>
-        </Card>
+        </div>
     </div>
 </template>
 
@@ -110,7 +106,6 @@ export default {
         gainSubmit () {
             this.current = 3;
             this.hintShow = true;
-            this.$Message.success('成功');
             const params = {
                 telPhone: this.formInlinePhone.telPhone,
                 email: this.formInlineEmail.email,
@@ -144,7 +139,7 @@ export default {
             this.current = 0;
         },
         loginSubmit () {
-            this.$router.push({ name: '登录' });
+            this.$router.push({ name: '首页' });
         },
         emailHandleSearch (value) {
             this.emailData = !value || value.indexOf('@') >= 0 ? [] : [
@@ -178,30 +173,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-// @keyframes findbg
-// {
-// from {background: url('../../assets/images/bg.jpg') no-repeat center/cover;}
-// to {background: url('../../assets/images/bg2.jpg') no-repeat center/cover;}
-// }
+
 .find-password {
-    width: 100%;
-    height: 100%;
-    font-size: 16px;
-    // animation: findbg infinite 10s linear alternate;
-    background: url('../../assets/images/bg.jpg') no-repeat center/cover;
+
     .box {
-        position: fixed;
-        // left: 0;
-        // top: 0;
-        // right: 0;
-        // bottom: 0;
-        // margin: auto;
-        left: 50%;
-        top: 20%;
-        margin-left: -350px;
-        width: 740px;
-        height: 340px;
-        // border: 1px solid red;
+        height: 200px;
         background-color: white;
         .title {
         font-size: 18px;

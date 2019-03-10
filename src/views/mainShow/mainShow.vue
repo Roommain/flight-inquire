@@ -85,8 +85,8 @@ export default {
     .search {
         position: absolute;
         width: 100%;
-        height: 100px;
-        top: 200px;
+        // height: 100px;
+        top: 300px;
     }
     .select-box {
         height: 300px;
