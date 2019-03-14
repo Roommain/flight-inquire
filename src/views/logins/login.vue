@@ -82,9 +82,9 @@ export default {
                         .then(data => {
                             if (data.data.code == 200) {
                                 this.userName = data.data.data.userName;
-                                this.$cookie.set('userName',this.userName,{  expires:1/24*12 });
-                                this.$cookie.set('isAdmin',data.data.data.isAdmin,{  expires:1/24*12 });
-                                this.$cookie.set('token',this.token,{  expires:1/24*12 });
+                                this.$cookie.set('userName',this.userName);
+                                this.$cookie.set('isAdmin',data.data.data.isAdmin);
+                                this.$cookie.set('token',this.token);
                                 this.closeLogin();
                                 // this.$router.push({name: '首页'});
                             }else {

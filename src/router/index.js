@@ -148,9 +148,9 @@ router.beforeEach((to, from, next) => {
     if(token){
       next();
     }else{
-      // next({
-      //   path:'/',
-      // });
+      next({
+        path:'/',
+      });
       Vue.prototype.$Message.warning('请先登录');
     }
   }else{

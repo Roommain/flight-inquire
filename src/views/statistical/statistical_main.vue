@@ -1,37 +1,6 @@
 <template>
     <div class="statistical-main">
-        <search/>
-        <!-- <Card class="card">
-            <div class="filtrate">
-                <Select v-model="searchValue" size="large" style="width:200px;">
-                    <Option v-for="item in searchType" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
-                <Input v-show="flightNumShow" v-model="flightValue" prefix="ios-plane" size="large" placeholder="请输入航班号" style="width: auto" />
-                <span v-show="cityShow">
-                    <AutoComplete
-                        v-model="departValue"
-                        class="autocomplete"
-                        icon="ios-pin"
-                        :data="cityData"
-                        :filter-method="filterMethod"
-                        placeholder="出发地"
-                        style="width:120px">
-                    </AutoComplete>
-                        <span class="change" @click="transform"><Icon type="md-swap" /></span>
-                    <AutoComplete
-                        v-model="arriveValue"
-                        class="autocomplete"
-                        icon="ios-pin"
-                        :data="cityData"
-                        :filter-method="filterMethod"
-                        placeholder="目的地"
-                        style="width:120px">
-                    </AutoComplete>
-                </span>
-                <DatePicker type="date" size="large" :options="options" placeholder="请选择日期" style="width: 220px"></DatePicker>
-                <Button type="primary" @click="search">航班查询</Button>
-            </div>
-        </Card> -->
+        <search @flight-data="flightData"/>
         <Card class="table">
             <Table stripe :loading="loading" :columns="columns" :data="pageData" :height="tableHeight"></Table>
             <div class="page">
@@ -42,6 +11,7 @@
 </template>
 
 <script>
+
 import Search from '@/components/search';
 export default {
     components: {
@@ -49,35 +19,18 @@ export default {
     },
     data() {
         return {
-            cityData: ['重庆', '成都', '深圳'],
             loading: true,
-            searchValue: '按航班号搜索',
-            flightNumShow: true,
-            cityShow: false,
             tableHeight: '',
-            flightValue: '',
-            departValue: '',
-            arriveValue: '',
-            pageData:[],
-            pantectTotalSize: 200,
+
+            takeOffDate: '',//起飞日期
+            placeOfDeparture: '',//起飞城市
+            placeOfDestination: '',//降落城市
+
+            pageData:[],//分页数据
+            pantectTotalSize: 200,//总数据
             page:1,
             size:20,
-            
-            searchType: [
-                {
-                    value: '按航班号搜索',
-                    label: '按航班号搜索',
-                },
-                {
-                    value: '按起降城市搜索',
-                    label: '按起降城市搜索',
-                }
-            ],
-            options: {
-                disabledDate (date) {
-                    return date && date.valueOf() < Date.now() - 86400000;
-                }
-            },
+        
             columns: [
                 // {
                 //     type: 'index',
@@ -87,16 +40,54 @@ export default {
                 //     tooltip:true,
                 // },
                 {
-                    title: '航班信息',
+                    title: '航班号',
                     key: 'flightInformation',
                     align: 'center',
+                    ellipsis:true,
                     tooltip:true,
+                    render: (h, params) => {
+                        return h('div', [
+                            h('Icon',{
+                                props:{
+                                    type: 'ios-plane'
+                                },
+                                style: {
+                                    width: '34px',
+                                    height: '34px',
+                                    marginRight: '5px',
+                                    color: '#fff',
+                                    fontSize: '34px',
+                                    backgroundColor: '#2D8CF0',
+                                    borderRadius: '50%',
+                                    textAlign: 'center',
+                                    transform: 'rotate(-45deg)'
+                                }
+                            }),
+                            params.row.flightInformation
+                        ]);
+                        // return h('div',[//<Icon type="logo-apple" /><Icon type="md-plane" />
+                        //     h('strong','第一列'),
+                        //     h('Icon',{
+                        //         props:{
+                        //             type: 'logo-apple'
+                        //         },
+                        //         style: {
+                        //             marginLeft: '5px'
+                        //         }
+                        //     })
+                        // ])
+                    }
                 },
                 {
                     title: '起飞时间',
                     key: 'takeOffTime',
                     align: 'center',
                     tooltip:true,
+                    render: (h, params) => {
+                        return h('div', [
+                            params.row.takeOffTime.slice(0,5)
+                        ]);
+                    }
                 },
                 {
                     title: '出发地',
@@ -109,6 +100,11 @@ export default {
                     key: 'arrivalTime',
                     align: 'center',
                     tooltip:true,
+                    render: (h, params) => {
+                        return h('div', [
+                            params.row.arrivalTime.slice(0,5)
+                        ]);
+                    }
                 },
                 {
                     title: '到达地',
@@ -129,7 +125,7 @@ export default {
                     tooltip:true,
                     render: (h, params) => {
                         return h('div', [
-                            params.row.status === '计划' &&  h(
+                            params.row.status === 0 &&  h(
                                 'span',
                                 {
                                     props: {
@@ -142,7 +138,7 @@ export default {
                                 },
                                 '计划' 
                             ),
-                            params.row.status === '飞行' &&  h(
+                            params.row.status === 1 &&  h(
                                 'span',
                                 {
                                     props: {
@@ -155,7 +151,7 @@ export default {
                                 },
                                 '飞行' 
                             ),
-                            params.row.status === '到达' &&  h(
+                            params.row.status === 2 &&  h(
                                 'span',
                                 {
                                     props: {
@@ -168,19 +164,6 @@ export default {
                                 },
                                 '到达' 
                             ),
-                            // h(
-                            //     'span',
-                            //     {
-                            //         props: {
-                            //             size: 'small'
-                            //         },
-                            //         style: {
-                            //             marginRight: '5px',
-                            //             color: 'green'
-                            //         },
-                            //     },
-                            //     '计划'
-                            // )
                         ]);
                     }
                 },
@@ -213,48 +196,38 @@ export default {
                     }
                 }
             ],
-            data: [
-                {
-                    flightInformation: '国航CA155',
-                    takeOffTime: '09:45',
-                    placeOfDeparture: '重庆',
-                    arrivalTime: '11:53',
-                    placeOfDestination: '北京',
-                    onTimeRate : '100%',
-                    status : '到达'
-                }
-            ]
+            data: []
         }
     },
     created() {
-        this.$axios
-            .get('https://www.easy-mock.com/mock/5c00cea7b5ca4f6a533ac6d0/example/flightInformation')
-            .then(data => {
-                this.loading = false;
-                console.log(data);
-                this.data = data.data.list || [];
-                this.paging(this.data,this.page,this.size);
-            });
+        this.getFlightData();  
     },
     methods:{
-        filterMethod (value, option) {
-                return option.toUpperCase().indexOf(value.toUpperCase()) !== -1;
+        flightData (val) {
+            this.data = val;
+            this.pantectTotalSize = val.length;
+            this.loading = false;
+            this.paging(this.data,this.page,this.size);
         },
-        transform () {
-            [this.departValue,this.arriveValue] = [this.arriveValue,this.departValue];
-        },
-        search () {
-            console.log('点击了搜索');
-            this.$router.push({ name: '数据' });
-        },
-        /**
-         * 跳转路由
-         */
-        selectMenu(name){
-            if (!name) {
-                return;
+        getFlightData () {
+            var searchParams = {
+                takeOffDate: sessionStorage.getItem('takeOffDate'),
+                placeOfDeparture: sessionStorage.getItem('placeOfDeparture'),
+                placeOfDestination: sessionStorage.getItem('placeOfDestination'),
+                flightInformation: sessionStorage.getItem('flightInformation'),
             }
-            this.$router.push({path:name});
+            this.$axios.post('api/flight/queryFlightInfo',searchParams)
+            .then(data => {
+                this.loading = false;
+                if(data.data.code == 200){
+                    console.log(data.data.data);
+                    this.data = data.data.data || [];
+                    this.pantectTotalSize = data.data.data.length;
+                    this.paging(this.data,this.page,this.size);
+                }else {
+                    this.$Message.error(data.data.msg);
+                }
+            }); 
         },
         // 控制表分页
         paging (number,page,size) {
@@ -280,25 +253,10 @@ export default {
             this.paging (this.data,this.page,this.size);
         },
         particulars (params) {
-            console.log('点击了详情');
             console.log(params);
             this.$router.push({ name: '航班详情' });
         }
     },
-    /**
-     * 监听搜索条件是按航班号还是按起降城市
-     */
-    watch: {
-        searchValue: function () {
-            if(this.searchValue == '按航班号搜索'){
-                this.flightNumShow = true;
-                this.cityShow = false;
-            }else if (this.searchValue == '按起降城市搜索') {
-                this.flightNumShow = false;
-                this.cityShow = true;
-            }
-        },
-    }
 };
 </script>
 
@@ -324,7 +282,6 @@ export default {
 }
 .page {
     margin-top: 10px;
-    // margin-left: 30%;
     text-align: center;
 }
 </style>

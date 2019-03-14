@@ -1,23 +1,25 @@
 <template>
     <div class="attention">
-        <div class="card" @click="cardParticulars" v-for="(item, index) in flightData" :key="index">
-            <p>
-                <span>{{item.flightNum}}</span>
-                <span class="empty0"></span>
-                <span>{{item.time}}</span>
-            </p>
-            <p>
-                <span>{{item.stratSite}}</span>
-                <span class="icon"><Icon type="ios-plane" size="60" color="#2D8CF0"/></span>
-                <span>{{item.endSite}}</span>            
-            </p>
-            <p>
-                <span>{{item.stratTime}}</span>
-                <span class="empty"></span>
-                <span>{{item.endTime}}</span>   
-            </p>
+        <div class="attention-box">
+            <div class="card" @click="cardParticulars" v-for="(item, index) in flightData" :key="index">
+                <p>
+                    <span>{{item.flightNum}}</span>
+                    <span class="empty0"></span>
+                    <span>{{item.time}}</span>
+                </p>
+                <p>
+                    <span>{{item.stratSite}}</span>
+                    <span class="icon"><Icon type="ios-plane" size="60" color="#2D8CF0"/></span>
+                    <span>{{item.endSite}}</span>            
+                </p>
+                <p>
+                    <span>{{item.stratTime}}</span>
+                    <span class="empty"></span>
+                    <span>{{item.endTime}}</span>   
+                </p>
+            </div>            
         </div>
-        <Footer/>
+        <Footer class="footer"/>
     </div>
 </template>
 
@@ -37,6 +39,12 @@ export default {
                 flight4:{flightNum:'四川航空G9679',time:'2019-06-05',stratSite:'四川',endSite:'深圳',stratTime:'18:40',endTime:'20:50'},
                 flight5:{flightNum:'四川航空G9679',time:'2019-06-05',stratSite:'四川',endSite:'深圳',stratTime:'18:40',endTime:'20:50'},
                 flight6:{flightNum:'四川航空G9679',time:'2019-06-05',stratSite:'四川',endSite:'深圳',stratTime:'18:40',endTime:'20:50'},
+                // flight7:{flightNum:'四川航空G9679',time:'2019-06-05',stratSite:'四川',endSite:'深圳',stratTime:'18:40',endTime:'20:50'},
+                // flight8:{flightNum:'四川航空G9679',time:'2019-06-05',stratSite:'四川',endSite:'深圳',stratTime:'18:40',endTime:'20:50'},
+                // flight9:{flightNum:'四川航空G9679',time:'2019-06-05',stratSite:'四川',endSite:'深圳',stratTime:'18:40',endTime:'20:50'},
+                // flight10:{flightNum:'四川航空G9679',time:'2019-06-05',stratSite:'四川',endSite:'深圳',stratTime:'18:40',endTime:'20:50'},
+                // flight11:{flightNum:'四川航空G9679',time:'2019-06-05',stratSite:'四川',endSite:'深圳',stratTime:'18:40',endTime:'20:50'},
+                // flight12:{flightNum:'四川航空G9679',time:'2019-06-05',stratSite:'四川',endSite:'深圳',stratTime:'18:40',endTime:'20:50'},
             }
         }
     },
@@ -51,16 +59,23 @@ export default {
 
 <style lang="less" scoped>
 .attention {
-    position: absolute;
+    position: fixed;
     width: 100%;
-    // height: 100%;
+    height: 100%;
     object-fit: fill;
-    background-image: url('../../assets/images/bg3.jpg');
+    // overflow-y: auto;
+    background: url('../../assets/images/bg3.jpg') no-repeat;
+    background-size: cover;
+    .attention-box {
+        width: 750px;
+        max-height: 80%;
+        overflow-y: auto;
+        margin: 10px auto;
+    }
     .card {
         width: 700px;
         height: 150px;
-        margin: 20px auto 0;
-        margin-bottom: 30px;
+        margin: 10px auto;
         font-size: 20px;
         color: rgba(209, 209, 209, 1);
         padding: 10px;
@@ -81,7 +96,13 @@ export default {
         }
     }
     .card:hover {
-        width: 704px;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+    .footer {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        bottom: 66px;
     }
 }
 

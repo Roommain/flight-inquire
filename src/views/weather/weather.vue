@@ -1,8 +1,8 @@
 <template>
     <div class="weather">
         <video width="100%"  class="video" loop="loop" autoplay="autoplay" muted="muted">
-            <!-- <source src="http://cdn.moji.com/websrc/video/winter20181129.mp4" type="video/mp4"> -->
-            <source src="@/assets/images/weather/winter20181129.mp4" type="video/mp4">
+            <source src="http://cdn.moji.com/websrc/video/winter20181129.mp4" type="video/mp4">
+            <!-- <source src="@/assets/images/weather/winter20181129.mp4" type="video/mp4"> -->
         </video>
         <div class="card">
             <p><input class="input" v-model="city" @keyup.enter="submit" placeholder="请输入城市然后按下Enter" /></p>
@@ -65,7 +65,7 @@ export default {
     },
     methods: {
         submit () {
-            this.$axios.get('/wea/weather/index?key=db56c2d4874ec941e15710323df153e4&cityname='+this.city)
+            this.$axios.get('/wea/index?key=db56c2d4874ec941e15710323df153e4&cityname='+this.city)
             .then(data => {
                 console.log(data.data.result.future);
                 this.weatherData = data.data.result.future;
@@ -82,6 +82,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.weather {
+    position: relative;
+}
 .video {
     position: fixed;
     width: 100%;
@@ -90,8 +93,8 @@ export default {
 }
 .card {
     position: absolute;
-    top: 100px;
-    right: 20px;
+    top: 40px;
+    right: 10px;
     width: 700px;
     height: 300px;
     background-color: rgba(0, 0, 0, 0.5);
@@ -116,7 +119,7 @@ export default {
         flex-wrap: nowrap;
         width: 100%;
         height: 250px;
-        font-size: 16px;
+        font-size: 14px;
         color: white;
         div {
             width: 20%;
@@ -142,15 +145,13 @@ export default {
     }
 }
 .wea {
-    position: absolute;
-    top: 0;
+    position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
     margin: auto;
     width: 500px;
     height: 100px;
-    // background-color: rgba(0, 0, 0, 1);
     border-radius: 5px;
     p {
         font-size: 24px;

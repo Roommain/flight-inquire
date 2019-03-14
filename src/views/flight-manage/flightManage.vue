@@ -62,7 +62,7 @@ export default {
 
 <style lang="less">
 .user-message {
-    // width: 100%;
+    width: 100%;
     // height: 100%;
     .user-header {
         padding-left: 30px;

@@ -23,7 +23,7 @@
             </CarouselItem>
         </Carousel>
         <div class="search">
-            <Search />
+            <Search/>
         </div>
         <div class="select-box">
             <ul>
@@ -65,7 +65,10 @@ export default {
         return {
             value: 0
         }
-    }
+    },
+    methods: {
+        
+    },
 }
 </script>
 
@@ -85,7 +88,7 @@ export default {
     .search {
         position: absolute;
         width: 100%;
-        // height: 100px;
+        min-width: 1200px;
         top: 300px;
     }
     .select-box {
