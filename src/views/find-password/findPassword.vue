@@ -139,7 +139,7 @@ export default {
             this.current = 0;
         },
         loginSubmit () {
-            this.$router.push({ name: '首页' });
+            this.$emit('find-password');
         },
         emailHandleSearch (value) {
             this.emailData = !value || value.indexOf('@') >= 0 ? [] : [

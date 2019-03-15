@@ -51,7 +51,7 @@
             title="找回密码"
             :footer-hide=true
             width=600>
-            <FindPassword/>
+            <FindPassword @find-password="alertLogin"/>
         </Modal>
         <router-view class="main-iview"></router-view>
     </div>

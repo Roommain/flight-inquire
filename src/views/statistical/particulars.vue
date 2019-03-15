@@ -2,18 +2,18 @@
     <div class="particulars">
         <search/>
         <Card class="card">
-            <p class="clearfloat"> <span class="particulars-flight">东方航空 MU5183</span><span class="particulars-state">到达</span> </p>
+            <p class="clearfloat"> <span class="particulars-flight">{{flightPartData.flightInformation}}</span><span class="particulars-state">{{newStatus(flightPartData.status)}}</span> </p>
             <div class="path">
                 <!-- <Progress :percent="45" status="active" /> -->
                 <div class="progress">
-                    <p class="whole">全程<span>117</span>公里&nbsp;&nbsp;时长<span>112</span>分钟 </p>
-                    <span class="start">上海</span>
-                    <Progress :percent="100" hide-info status="active" />
-                    <span class="over"><Icon type="ios-plane" size="40" />&nbsp;&nbsp;重庆</span>
+                    <p class="whole">全程<span>{{flightPartData.wholeJourney}}</span>公里&nbsp;&nbsp;时长<span>{{flightPartData.duration}}</span>分钟 </p>
+                    <span class="start">{{flightPartData.placeOfDeparture}}</span>
+                    <Progress :percent=flightStatus(flightPartData.status) hide-info status="active" />
+                    <span class="over"><Icon type="ios-plane" size="40" />&nbsp;&nbsp;{{flightPartData.placeOfDestination}}</span>
                     <p class="whole">
-                        机型：<span>AIRBUSA321-211</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                        机龄：<span>12.5</span>年&nbsp;&nbsp;&nbsp;&nbsp;
-                        历史准点率：<span>96.77%</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                        机型：<span>{{flightPartData.aircraftType}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                        机龄：<span>{{flightPartData.aircraftAge}}</span>年&nbsp;&nbsp;&nbsp;&nbsp;
+                        历史准点率：<span>{{flightPartData.onTimeRate}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
                     </p>
                 </div>
             </div>
@@ -21,7 +21,7 @@
         <Card class="card">
             <div class="start-box">
                 <p class="start-time">
-                    <span class="site"><img src="@/assets/images/weather/start.png" alt=""> 上海T2</span> <span class="time">2019-03-08 周五 计划起飞07:35</span>
+                    <span class="site"><img src="@/assets/images/weather/start.png" alt=""> {{flightPartData.placeOfDeparture}}</span> <span class="time"> <span>{{flightPartData.takeOffDate}}</span> 计划起飞{{flightTime(flightPartData.takeOffTime)}}</span>
                 </p>
                 <ul class="clearfloat">
                     <li>
@@ -31,11 +31,11 @@
                     </li>
                     <li>
                         <p>实际起飞</p>
-                        <p class="practical-time">07:04</p>
+                        <p class="practical-time">{{flightTime(flightPartData.takeOffTime)}}</p>
                     </li>
                     <li>
                         <p>登记口</p>
-                        <p class="suggest">30</p>
+                        <p class="suggest">{{flightPartData.departureGate}}</p>
                     </li>
                 </ul>
             </div>
@@ -43,17 +43,17 @@
         <Card class="card">
             <div class="start-box">
                 <p class="start-time">
-                    <span class="site"><img src="@/assets/images/weather/end.png" alt=""> 重庆T3</span> <span class="time">2019-03-08 周五 计划到达09:35</span>
+                    <span class="site"><img src="@/assets/images/weather/end.png" alt="">{{flightPartData.placeOfDestination}}</span> <span class="time"> <span>{{flightPartData.takeOffDate}}</span> 计划到达{{flightTime(flightPartData.arrivalTime)}}</span>
                 </p>
                 <ul class="clearfloat">
                     <li>
                         <img class="weather" src="@/assets/images/weather/duoyun.png" alt="天气" width="62" height="62">
-                        <p>-2°/13°	C 多云</p>
+                        <p>8°/13°	C 多云</p>
                         <p>PM2.5：76</p>
                     </li>
                     <li>
                         <p>实际到达</p>
-                        <p class="practical-time">09:04</p>
+                        <p class="practical-time">{{flightTime(flightPartData.arrivalTime)}}</p>
                     </li>
                     <li>
                         <p>到达口</p>
@@ -63,7 +63,7 @@
             </div>
         </Card>
         <div class="attention">
-            <Button size="large" @click="attentionSubmit" type="primary" style="width: 100%;height: 42px;">关注</Button>
+            <Button size="large" @click="attentionSubmit" type="primary" style="width: 100%;height: 42px;">{{msg}}</Button>
         </div>
         <Footer/>
     </div>
@@ -80,24 +80,111 @@ export default {
     data() {
         return {
             cityname:'重庆',
+            flightId:'',
+            flightPartData:{
+                aircraftAge: 9,
+                aircraftType: "波音707",
+                arrivalTime: "04:03:00",
+                baggageCarousel: 5,
+                checkinCounters: "G",
+                departureGate: 5,
+                duration: 90,
+                flightId: "68N028",
+                flightInformation: "重庆航空OQ3242",
+                onTimeRate: "98%",
+                placeOfDeparture: "西安",
+                placeOfDestination: "重庆",
+                status: 0,
+                takeOffDate: "2019-03-15",
+                takeOffTime: "02:02:00",
+                wholeJourney: 156,
+            },
+            msg:'',
         }
     },
     created() {
-        // this.weather();
+        this.getParticularsData();
+        // this.flightId = this.$route.params.flightId || '';
+        // console.log(this.flightId);
     },
     methods: {
-        weather () {
-            this.$axios.get('/wea/weather/index?key=db56c2d4874ec941e15710323df153e4&cityname='+this.cityname)
+        // weather () {
+        //     this.$axios.get('/wea/weather/index?key=db56c2d4874ec941e15710323df153e4&cityname='+this.cityname)
+        //     .then(data => {
+        //         console.log(data);
+        //     }).catch(() => {
+        //         this.$Message.error('请求失败');
+        //         return;
+        //     });
+        // },
+        attentionSubmit () {
+            this.$Message.success('关注成功');
+        },
+        getParticularsData () {
+            this.flightId = this.$route.params.flightId || '';
+            console.log(this.flightId);
+            var params = {
+                flightId: this.flightId,
+            }
+            this.$axios.post('api/flight/queryInfoByFlightId',params)
             .then(data => {
-                console.log(data);
+                console.log(data.data);
+                if(data.data.code == 200) {
+                    this.flightPartData = data.data.data;
+                    this.msg = data.data.msg;
+                }
+
             }).catch(() => {
                 this.$Message.error('请求失败');
                 return;
             });
-        },
-        attentionSubmit () {
-            this.$Message.success('关注成功');
         }
+    },
+    computed:{
+        /**
+        * 封装进行状态修改的方法
+        * @param {Object} obj 当前渲染的对象
+        */
+       //飞行状态
+        newStatus(){
+            return function(obj) {
+                if(obj == 0){
+                    return '计划';
+                }
+                 else if (obj == 1) {
+                    return '飞行';
+                } else if (obj == 2) {
+                    return '到达';
+                } else if (obj == 3) {
+                    return '延误';
+                } else if (obj == 4) {
+                    return '取消';
+                }
+            };
+        },
+        //飞行进度条
+        flightStatus(){
+            return function(obj) {
+                if(obj == 0){
+                    return 0;
+                }
+                 else if (obj == 1) {
+                    return 50;
+                } else if (obj == 2) {
+                    return 100;
+                } else if (obj == 3) {
+                    return '延误';
+                } else if (obj == 4) {
+                    return 0;
+                }
+            };
+        },
+        //截取时间
+        flightTime(){
+            return function(obj) {
+                return obj.slice(0,5);
+            };
+        },
     },
 }
 </script>

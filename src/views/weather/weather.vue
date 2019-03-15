@@ -18,6 +18,13 @@
                 </div>
             </div>
         </div>
+        <div class="today-wea">
+            <p class="today-title">这里是<Icon type="md-pin" size="20" color="#2D8CF0" /><span class="today-city">{{todayWeaData.city}}</span> </p>
+            <p>今天是 <span>{{todayWeaData.date_y}}</span> <span>{{todayWeaData.week}}</span> </p>
+            <p>当地温度 <span>{{todayWeaData.temperature}}</span> <span>{{todayWeaData.dressing_index}}</span> </p>
+            <P><img :src=newStatus(todayWeaData.weather) alt=""></P>
+            <p class="suggest"><span>{{todayWeaData.dressing_advice}}</span> </p>
+        </div>
         <div class="wea">
             <p class="title">天气改变命运</p>
             <p>Weather Change Your Destiny</p>
@@ -38,6 +45,16 @@ export default {
                 day5: {date: '2019/3/13',temperature: '9℃~15℃',weather: '阴转多云',week: '星期三',wind: '微风'},
                 day6: {date: '2019/3/14',temperature: '9℃~15℃',weather: '阴转多云',week: '星期四',wind: '微风'},
                 day7: {date: '2019/3/15',temperature: '9℃~15℃',weather: '阴转多云',week: '星期五',wind: '微风'},
+            },
+            todayWeaData: {
+                city: "重庆",
+                date_y: "2019年03月15日",
+                dressing_advice: "建议着厚外套加毛衣等服装。年老体弱者宜着大衣、呢外套加羊毛衫。",
+                dressing_index: "较冷",
+                temperature: "11℃~14℃",
+                weather: "小雨转阴",
+                week: "星期五",
+                wind: "持续无风向微风",
             }
         }
     },
@@ -65,10 +82,17 @@ export default {
     },
     methods: {
         submit () {
-            this.$axios.get('/wea/index?key=db56c2d4874ec941e15710323df153e4&cityname='+this.city)
+            // this.$axios.get('/wea/index?key=db56c2d4874ec941e15710323df153e4&cityname='+this.city)
+            this.$axios.get('/wea/index',{
+                params:{
+                    key:'db56c2d4874ec941e15710323df153e4',
+                    cityname:this.city
+                }
+            })
             .then(data => {
                 console.log(data.data.result.future);
                 this.weatherData = data.data.result.future;
+                this.todayWeaData = data.data.result.today;
             })
             .catch(() => {
                 this.$Message.error('请求失败');
@@ -95,7 +119,7 @@ export default {
     position: absolute;
     top: 40px;
     right: 10px;
-    width: 700px;
+    width: 650px;
     height: 300px;
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 5px;
@@ -161,6 +185,34 @@ export default {
     }
     .title {
             letter-spacing:20px;
+    }
+}
+.today-wea {
+    position: absolute;
+    top: 40px;
+    right: 700px;
+    width: 500px;
+    height: 400px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    border-radius: 5px;
+    line-height: 50px;
+    .today-title {
+        padding: 10px 0;
+        font-size: 18px;
+        color: rgba(209, 209, 209, 1);
+    }
+    .today-city {
+        color: antiquewhite;
+        font-size: 24px;
+    }
+    .suggest {
+        font-size: 12px;
+    }
+    img {
+        width: 140px;
     }
 }
 </style>

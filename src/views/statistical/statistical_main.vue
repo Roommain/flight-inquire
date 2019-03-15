@@ -32,13 +32,6 @@ export default {
             size:20,
         
             columns: [
-                // {
-                //     type: 'index',
-                //     title: '序号',
-                //     width: 80,
-                //     align: 'center',
-                //     tooltip:true,
-                // },
                 {
                     title: '航班号',
                     key: 'flightInformation',
@@ -65,17 +58,6 @@ export default {
                             }),
                             params.row.flightInformation
                         ]);
-                        // return h('div',[//<Icon type="logo-apple" /><Icon type="md-plane" />
-                        //     h('strong','第一列'),
-                        //     h('Icon',{
-                        //         props:{
-                        //             type: 'logo-apple'
-                        //         },
-                        //         style: {
-                        //             marginLeft: '5px'
-                        //         }
-                        //     })
-                        // ])
                     }
                 },
                 {
@@ -253,8 +235,12 @@ export default {
             this.paging (this.data,this.page,this.size);
         },
         particulars (params) {
-            console.log(params);
-            this.$router.push({ name: '航班详情' });
+            this.$router.push({
+                name: '航班详情',
+                params: {
+                    flightId: params.row.flightId
+                }
+            });
         }
     },
 };
