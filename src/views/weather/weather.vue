@@ -14,7 +14,7 @@
                     <P><img :src=newStatus(item.weather) alt=""></P>
                     <!-- <P><img src="@/assets/images/weather/w7.png" alt=""></P> -->
                     <p>{{item.weather}}</p>
-                    <p>{{item.wind}}</p>
+                    <!-- <p>{{item.wind}}</p> -->
                 </div>
             </div>
         </div>
@@ -120,7 +120,7 @@ export default {
     top: 40px;
     right: 10px;
     width: 650px;
-    height: 300px;
+    height: 270px;
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 5px;
     p{
@@ -142,7 +142,7 @@ export default {
         justify-content:center;
         flex-wrap: nowrap;
         width: 100%;
-        height: 250px;
+        height: 220px;
         font-size: 14px;
         color: white;
         div {
@@ -152,6 +152,7 @@ export default {
             p {
                 width: 100%;
                 margin: 0;
+                line-height: 30px;
                 text-align: center;
                 padding-top: 10px;
             }

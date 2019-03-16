@@ -12,7 +12,7 @@
                     <span class="change" @click="transform"><Icon type="md-swap" /></span>
                 <City @city-change="cityChange2" ref="city2" style="width:200px"/>
             </span>
-            <DatePicker type="date" v-model="datevalue" size="large" :options="options" placeholder="请选择日期" style="width: 220px"></DatePicker>
+            <DatePicker type="date" v-model="datevalue" size="large" placeholder="请选择日期" style="width: 220px"></DatePicker>
             <Button type="primary" @click="search">航班查询</Button>
         </div>
     </Card>
@@ -44,11 +44,11 @@ export default {
                     label: '按起降城市搜索',
                 }
             ],
-            options: {
-                disabledDate (date) {
-                    return date && date.valueOf() < Date.now() - 86400000;
-                }
-            },
+            // options: {
+            //     disabledDate (date) {
+            //         return date && date.valueOf() < Date.now() - 86400000;
+            //     }
+            // },
         }
     },
     created() {

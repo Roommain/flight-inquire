@@ -25,16 +25,16 @@
                 </p>
                 <ul class="clearfloat">
                     <li>
-                        <img class="weather" src="@/assets/images/weather/duoyun.png" alt="天气" width="62" height="62">
-                        <p>-2°/13°	C 多云</p>
-                        <p>PM2.5：76</p>
+                        <!-- <img class="weather" src="@/assets/images/weather/duoyun.png" alt="天气" width="62" height="62"> -->
+                        <p>值机柜台</p>
+                        <p class="suggest">{{flightPartData.checkinCounters}}</p>
                     </li>
                     <li>
-                        <p>实际起飞</p>
+                        <p>{{showPlantakeOff(flightPartData.status)}}</p>
                         <p class="practical-time">{{flightTime(flightPartData.takeOffTime)}}</p>
                     </li>
                     <li>
-                        <p>登记口</p>
+                        <p>登机口</p>
                         <p class="suggest">{{flightPartData.departureGate}}</p>
                     </li>
                 </ul>
@@ -47,12 +47,12 @@
                 </p>
                 <ul class="clearfloat">
                     <li>
-                        <img class="weather" src="@/assets/images/weather/duoyun.png" alt="天气" width="62" height="62">
-                        <p>8°/13°	C 多云</p>
-                        <p>PM2.5：76</p>
+                        <!-- <img class="weather" src="@/assets/images/weather/duoyun.png" alt="天气" width="62" height="62"> -->
+                        <p>行李转盘</p>
+                        <p class="suggest">{{flightPartData.baggageCarousel}}</p>
                     </li>
                     <li>
-                        <p>实际到达</p>
+                        <p>{{showPlanArrival(flightPartData.status)}}</p>
                         <p class="practical-time">{{flightTime(flightPartData.arrivalTime)}}</p>
                     </li>
                     <li>
@@ -99,7 +99,7 @@ export default {
                 takeOffTime: "02:02:00",
                 wholeJourney: 156,
             },
-            msg:'',
+            msg:'未关注',
         }
     },
     created() {
@@ -118,7 +118,20 @@ export default {
         //     });
         // },
         attentionSubmit () {
-            this.$Message.success('关注成功');
+            var params = {
+                flightId: this.flightId,
+            }
+            this.$axios.post('api/flight/insertFollow',params)
+            .then(data => {
+                console.log(data.data);
+                if(data.data.code == 200) {
+                    this.$Message.success(data.data.msg);
+                    this.msg = '已关注';
+                }
+            }).catch(() => {
+                this.$Message.error('请求失败');
+                return;
+            });
         },
         getParticularsData () {
             this.flightId = this.$route.params.flightId || '';
@@ -173,7 +186,7 @@ export default {
                 } else if (obj == 2) {
                     return 100;
                 } else if (obj == 3) {
-                    return '延误';
+                    return 0;
                 } else if (obj == 4) {
                     return 0;
                 }
@@ -185,6 +198,36 @@ export default {
                 return obj.slice(0,5);
             };
         },
+        //通过航班状态展示是 计划起飞还是 实际起飞
+        showPlantakeOff() {
+            return function(obj) {
+                if(obj == 0){
+                    return '计划起飞';
+                }
+                 else if (obj == 1) {
+                    return '实际起飞';
+                } else if (obj == 2) {
+                    return '实际起飞';
+                }else {
+                    return '计划起飞';
+                }
+            };
+        },
+        //通过航班状态展示是 计划到达 还是 实际到达
+        showPlanArrival() {
+            return function(obj) {
+                if(obj == 0){
+                    return '计划到达';
+                }
+                 else if (obj == 1) {
+                    return '计划到达';
+                } else if (obj == 2) {
+                    return '实际到达';
+                }else {
+                    return '计划到达';
+                }
+            };
+        }
     },
 }
 </script>
@@ -262,9 +305,6 @@ export default {
             height: 100px;
             list-style: none;
             text-align: center;
-            .weather {
-                // float: left;
-            }
             .practical-time {
                 margin-top: 20px;
                 font-size: 30px;

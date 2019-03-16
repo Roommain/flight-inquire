@@ -1,21 +1,21 @@
 <template>
     <div class="attention">
         <div class="attention-box">
-            <div class="card" @click="cardParticulars" v-for="(item, index) in flightData" :key="index">
+            <div class="card" @click="cardParticulars(item.flightId)" v-for="(item, index) in flightData" :key="index">
                 <p>
-                    <span>{{item.flightNum}}</span>
-                    <span class="empty0"></span>
-                    <span>{{item.time}}</span>
+                    <span>{{item.flightInformation}}</span>
+                    <!-- <span class="empty0"></span> -->
+                    <span class="att-right">{{item.takeOffDate}}</span>
                 </p>
                 <p>
-                    <span>{{item.stratSite}}</span>
+                    <span>{{item.placeOfDeparture}}</span>
                     <span class="icon"><Icon type="ios-plane" size="60" color="#2D8CF0"/></span>
-                    <span>{{item.endSite}}</span>            
+                    <span>{{item.placeOfDestination}}</span>            
                 </p>
                 <p>
-                    <span>{{item.stratTime}}</span>
-                    <span class="empty"></span>
-                    <span>{{item.endTime}}</span>   
+                    <span>{{flightTime(item.takeOffTime)}}</span>
+                    <!-- <span class="empty"></span> -->
+                    <span class="att-right">{{flightTime(item.arrivalTime)}}</span>   
                 </p>
             </div>            
         </div>
@@ -32,26 +32,41 @@ export default {
     },
     data() {
         return {
-            flightData:{
-                flight1:{flightNum:'海南航空G9679',time:'2019-03-05',stratSite:'海南',endSite:'深圳',stratTime:'07:40',endTime:'08:50'},
-                flight2:{flightNum:'民航航空G9679',time:'2019-04-05',stratSite:'北京',endSite:'上海',stratTime:'05:40',endTime:'08:50'},
-                flight3:{flightNum:'重庆航空G9679',time:'2019-05-05',stratSite:'重庆',endSite:'深圳',stratTime:'15:40',endTime:'16:50'},
-                flight4:{flightNum:'四川航空G9679',time:'2019-06-05',stratSite:'四川',endSite:'深圳',stratTime:'18:40',endTime:'20:50'},
-                flight5:{flightNum:'四川航空G9679',time:'2019-06-05',stratSite:'四川',endSite:'深圳',stratTime:'18:40',endTime:'20:50'},
-                flight6:{flightNum:'四川航空G9679',time:'2019-06-05',stratSite:'四川',endSite:'深圳',stratTime:'18:40',endTime:'20:50'},
-                // flight7:{flightNum:'四川航空G9679',time:'2019-06-05',stratSite:'四川',endSite:'深圳',stratTime:'18:40',endTime:'20:50'},
-                // flight8:{flightNum:'四川航空G9679',time:'2019-06-05',stratSite:'四川',endSite:'深圳',stratTime:'18:40',endTime:'20:50'},
-                // flight9:{flightNum:'四川航空G9679',time:'2019-06-05',stratSite:'四川',endSite:'深圳',stratTime:'18:40',endTime:'20:50'},
-                // flight10:{flightNum:'四川航空G9679',time:'2019-06-05',stratSite:'四川',endSite:'深圳',stratTime:'18:40',endTime:'20:50'},
-                // flight11:{flightNum:'四川航空G9679',time:'2019-06-05',stratSite:'四川',endSite:'深圳',stratTime:'18:40',endTime:'20:50'},
-                // flight12:{flightNum:'四川航空G9679',time:'2019-06-05',stratSite:'四川',endSite:'深圳',stratTime:'18:40',endTime:'20:50'},
-            }
+            flightData:[]
         }
     },
+    created() {
+        this.getAttentionData();
+    },
     methods: {
-        cardParticulars () {
-            this.$router.push({ name: '航班详情' });
+        cardParticulars (id) {
+            this.$router.push({
+                name: '航班详情',
+                params: {
+                    flightId: id
+                }
+            });
+        },
+        getAttentionData () {
+            this.$axios.get('api/flight/queryFlyInfoByFlights')
+            .then(data => {
+                console.log(data);
+                if(data.data.code == 200) {
+                    this.flightData = data.data.data;
+                }
+            }).catch(() => {
+                this.$Message.error('请求失败');
+                return;
+            });
         }
+    },
+    computed: {
+        //截取时间
+        flightTime(){
+            return function(obj) {
+                return obj.slice(0,5);
+            };
+        },
     },
 
 }
@@ -86,13 +101,13 @@ export default {
             text-align: center;
         }
         .icon {
-            padding: 0 255px;
+            padding: 0 262px;
         }
         .empty0 {
-            padding: 0 210px;
+            padding: 0 180px;
         }
         .empty {
-            padding: 0 280px;
+            padding: 0 200px;
         }
     }
     .card:hover {
@@ -105,5 +120,7 @@ export default {
         bottom: 66px;
     }
 }
-
+.att-right {
+    float: right;
+}
 </style>
