@@ -472,7 +472,6 @@ import City from '@/components/city';
                         console.log(params);
                         this.$axios.post('api/flight/insertFlightInfo',params)
                             .then(data => {
-                                console.log(data);
                                 if(data.data.code == 200) {
                                     this.$Message.success(data.data.msg);
                                 }

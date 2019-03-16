@@ -52,9 +52,11 @@ export default {
         }
     },
     created() {
+
         var day = new Date();
         this.datevalue = day;
         this.searchValue = sessionStorage.getItem('searchValue') || '按航班号搜索';
+        this.getSessionStorage ();
     },
     methods:{
         transform () {
@@ -77,7 +79,6 @@ export default {
             this.arriveValue = val;
         },
         searchChange () {
-            console.log(this.searchValue);
             sessionStorage.setItem('searchValue',this.searchValue);
         },
         //搜索数据
@@ -97,17 +98,34 @@ export default {
             this.$axios.post('api/flight/queryFlightInfo',params)
                 .then(data => {
                     if(data.data.code == 200){
-                        console.log(data);
                         var flightData = data.data.data || [];
                         this.$emit('flight-data',flightData);
                     }else {
                         this.$Message.error(data.data.msg);
                     }
-                }); 
+                });
         },
         childMethodChange () {
             this.$refs.city.childMethod(this.departValue); 
             this.$refs.city2.childMethod(this.arriveValue); 
+        },
+        getSessionStorage () {
+            var takeOffDate = sessionStorage.getItem('takeOffDate');
+            var placeOfDeparture = sessionStorage.getItem('placeOfDeparture');
+            var placeOfDestination = sessionStorage.getItem('placeOfDestination');
+            var flightInformation = sessionStorage.getItem('flightInformation');
+            if(takeOffDate != null) {
+                this.datevalue = takeOffDate;
+            }
+            if(placeOfDeparture != null) {
+                this.departValue = placeOfDeparture;
+            }
+            if(placeOfDestination != null) {
+                this.arriveValue = placeOfDestination;
+            }
+            if(flightInformation != null) {
+                this.flightValue = flightInformation;
+            }
         }
     },
     /**

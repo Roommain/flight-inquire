@@ -104,29 +104,26 @@ export default {
     },
     created() {
         this.getParticularsData();
-        // this.flightId = this.$route.params.flightId || '';
-        // console.log(this.flightId);
     },
     methods: {
-        // weather () {
-        //     this.$axios.get('/wea/weather/index?key=db56c2d4874ec941e15710323df153e4&cityname='+this.cityname)
-        //     .then(data => {
-        //         console.log(data);
-        //     }).catch(() => {
-        //         this.$Message.error('请求失败');
-        //         return;
-        //     });
-        // },
         attentionSubmit () {
             var params = {
                 flightId: this.flightId,
             }
             this.$axios.post('api/flight/insertFollow',params)
             .then(data => {
-                console.log(data.data);
                 if(data.data.code == 200) {
-                    this.$Message.success(data.data.msg);
-                    this.msg = '已关注';
+                    if(data.data.msg == '已关注') {
+                        this.msg = '已关注';
+                        this.$Message.success('成功关注');
+                    }else if (data.data.msg == '未关注') {
+                        this.msg = '未关注';
+                        this.$Message.success('成功取消关注');
+                    }else {
+                        this.$Message.warning(data.data.msg);
+                    }
+                }else {
+                    this.$Message.error('关注失败');
                 }
             }).catch(() => {
                 this.$Message.error('请求失败');
@@ -141,12 +138,10 @@ export default {
             }
             this.$axios.post('api/flight/queryInfoByFlightId',params)
             .then(data => {
-                console.log(data.data);
                 if(data.data.code == 200) {
                     this.flightPartData = data.data.data;
                     this.msg = data.data.msg;
                 }
-
             }).catch(() => {
                 this.$Message.error('请求失败');
                 return;

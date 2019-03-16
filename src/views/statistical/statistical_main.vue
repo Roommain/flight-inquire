@@ -146,6 +146,32 @@ export default {
                                 },
                                 '到达' 
                             ),
+                            params.row.status === 3 &&  h(
+                                'span',
+                                {
+                                    props: {
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px',
+                                        color: '#ff9900'
+                                    },
+                                },
+                                '延误' 
+                            ),
+                            params.row.status === 4 &&  h(
+                                'span',
+                                {
+                                    props: {
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px',
+                                        color: 'red'
+                                    },
+                                },
+                                '取消' 
+                            ),
                         ]);
                     }
                 },
@@ -202,12 +228,11 @@ export default {
             .then(data => {
                 this.loading = false;
                 if(data.data.code == 200){
-                    console.log(data.data.data);
                     this.data = data.data.data || [];
                     this.pantectTotalSize = data.data.data.length;
                     this.paging(this.data,this.page,this.size);
                 }else {
-                    this.$Message.error(data.data.msg);
+                    return;
                 }
             }); 
         },
