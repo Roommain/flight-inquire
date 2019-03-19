@@ -1,10 +1,15 @@
 <template>
     <div class="deleteflight">
-        <div class="batch">
-            <DatePicker type="date" placeholder="可输入删除日期" style="width: 200px"></DatePicker>
-            <Button type="warning">批量删除</Button>            
+        <div class="search">
+            <Input v-model="flightValue" prefix="ios-plane" size="large" placeholder="请输入航班号" style="width: auto" />
+            <DatePicker type="date" v-model="datevalue" size="large" placeholder="请选择日期" style="width: 220px"></DatePicker>
+            <Button type="primary" @click="search">航班号查询</Button>
         </div>
-        <Table stripe :loading="loading" :columns="columns" :data="pageData" :height="tableHeight"></Table>
+        <div class="batch">
+            <!-- <DatePicker type="date" placeholder="可输入删除日期" style="width: 200px"></DatePicker> -->
+            <Button type="warning" @click="batchButton(flightids)">批量删除</Button> 
+        </div>
+        <Table stripe :loading="loading" :columns="columns" :data="pageData" :height="tableHeight" @on-selection-change="getFlightIds"></Table>
         <div class="page">
             <Page :total="pantectTotalSize" :current=page :page-size="size" @on-change="changePage" @on-page-size-change="changeSize" show-elevator show-sizer show-total/>
         </div>
@@ -22,7 +27,8 @@ export default {
             pantectTotalSize: 200,//总数据
             page:1,
             size:20,
-        
+            flightValue:'',
+            datevalue:'',
             columns: [
                 {
                     type: 'selection',
@@ -165,10 +171,13 @@ export default {
                     }
                 },
             ],
-            data: []
+            data: [],
+            flightids:[]
         }
     },
     created() {
+        var day = new Date();
+        this.datevalue = day;
         this.getFlightData();  
     },
     methods:{
@@ -190,8 +199,8 @@ export default {
             var startIndex = (page-1) * size;
             var endIndex = page * size;
             this.pageData = number.slice(startIndex,endIndex);
-            if(this.pageData.length > 12){
-                this.tableHeight = 600;
+            if(this.pageData.length > 10){
+                this.tableHeight = 520;
             }else{
                 this.tableHeight = 0;
             }
@@ -211,6 +220,45 @@ export default {
         //修改航班
         updatedFlight (id) {
             console.log(id);
+        },
+        //按航班号搜索
+        search () {
+            var params = {
+                flightInformation:this.flightValue,
+                takeOffDate:this.datevalue,
+            }
+            this.$axios.post('api/flight/queryFlightInfo',params)
+                .then(data => {
+                    if(data.data.code == 200){
+                        this.data = data.data.data || [];
+                        this.pantectTotalSize = data.data.data.length;
+                        this.paging(this.data,this.page,this.size);
+                    }else {
+                        this.$Message.error(data.data.msg);
+                    }
+                });
+        },
+        batchButton(flightids) {
+            console.log(flightids);
+            var params = {
+                flightid:flightids,
+                takeOffDate:'',
+            }
+            this.$axios.post('api/flight/deleteFlightInfo',params)
+                .then(data => {
+                    if(data.data.code == 200){
+
+                    }else {
+                        this.$Message.error(data.data.msg);
+                    }
+                });   
+        },
+        getFlightIds (value) {
+            this.flightids = [];
+            value.forEach(item => {
+                this.flightids.push(item.flightId);
+            });
+            console.log(this.flightids);
         }
     },
 }
@@ -219,9 +267,14 @@ export default {
 <style lang="less" scoped>
 .batch {
     margin-bottom: 10px;
+    text-align: right;
 }
 .page {
     margin-top: 10px;
     text-align: center;
+}
+.search {
+    text-align: center;
+    margin-bottom: 15px;
 }
 </style>

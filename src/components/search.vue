@@ -52,7 +52,6 @@ export default {
         }
     },
     created() {
-
         var day = new Date();
         this.datevalue = day;
         this.searchValue = sessionStorage.getItem('searchValue') || '按航班号搜索';
