@@ -58,6 +58,9 @@ export default {
             }
         }
     },
+    created() {
+        this.submit();
+    },
     computed:{
         /**
         * 封装进行状态修改的方法

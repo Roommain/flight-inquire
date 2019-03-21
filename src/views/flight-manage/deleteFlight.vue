@@ -149,7 +149,7 @@ export default {
                                     },
                                     style: {
                                         marginRight: '5px',
-                                        color: '#19be6b'
+                                        color: '#ff9900'
                                     },
                                 },
                                 '延误' 
@@ -162,7 +162,7 @@ export default {
                                     },
                                     style: {
                                         marginRight: '5px',
-                                        color: '#19be6b'
+                                        color: 'red'
                                     },
                                 },
                                 '取消' 
@@ -241,13 +241,13 @@ export default {
         batchButton(flightids) {
             console.log(flightids);
             var params = {
-                flightid:flightids,
-                takeOffDate:'',
+                flightIds:flightids,
             }
-            this.$axios.post('api/flight/deleteFlightInfo',params)
+            this.$axios.post('api/flight/deleteByFlightIds',params)
                 .then(data => {
                     if(data.data.code == 200){
-
+                        this.getFlightData();
+                        this.$Message.success(data.data.msg);
                     }else {
                         this.$Message.error(data.data.msg);
                     }
