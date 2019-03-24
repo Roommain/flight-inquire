@@ -3,7 +3,7 @@
     <div class="register-main">
       <div class="card">
           <!-- <h1>快速注册</h1> -->
-          <Form class="form" ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
+        <Form class="form" ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
             <FormItem label="用户名" prop="userName">
                 <Input size="large" v-model="formValidate.userName" placeholder="请输入你的用户名"></Input>
             </FormItem>

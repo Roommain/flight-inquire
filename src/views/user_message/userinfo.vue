@@ -96,7 +96,7 @@ export default {
                 if (data.data.code == 200) {
                     this.$Message.success(data.data.msg);
                     this.requestInformation();
-                    this.$cookie.set('userName',this.formItem.userName,{  expires:1/24*12 });
+                    this.$cookie.set('userName',this.formItem.userName);
                     interlayer.$emit('active',this.formItem.userName);
                 }else {
                     this.$Message.error(data.data.msg);

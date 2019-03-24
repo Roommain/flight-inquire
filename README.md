@@ -1,7 +1,6 @@
 # flightinquire
 
-> 毕业设计飞机航班信息查询系统
-使用vue+iview
+> 毕业设计飞机航班信息查询系统 使用vue+iview http://120.79.66.215
 ## Build Setup
 
 ``` bash
@@ -17,5 +16,16 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
+## 使用技术
+``` bash
+# "axios": "^0.18.0",
+# "iview": "^3.3.3",
+# "js-cookie": "^2.2.0",
+# "js-md5": "^0.7.3",
+# "less": "^3.9.0",
+# "less-loader": "^4.1.0",
+# "vue": "^2.5.2",
+# "vue-resource": "^1.5.1",
+# "vue-router": "^3.0.1"
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
