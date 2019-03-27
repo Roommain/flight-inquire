@@ -5,10 +5,10 @@
               <img class="logo" src="../assets/images/fei.png" alt=""><span class="logo-title">飞途在线</span> 
             </div>
             <nav class="main-nav">
-                <router-link tag="li" to="main"><Icon type="md-home"/>&nbsp;&nbsp;首页</router-link>
-                <router-link tag="li" to="attention"><Icon type="md-heart-outline"/>&nbsp;&nbsp;关注航班</router-link>
-                <router-link tag="li" to="weather"><Icon type="md-cloud" />&nbsp;&nbsp;了解天气</router-link>
-                <router-link v-show="adminShow" tag="li" to="flightManage"><Icon type="ios-create-outline"/>&nbsp;&nbsp;航班管理</router-link>
+                <router-link tag="li" to="/mainShow" active-class="active"><Icon type="md-home"/>&nbsp;&nbsp;首页</router-link>
+                <router-link tag="li" to="/attention"><Icon type="md-heart-outline"/>&nbsp;&nbsp;关注航班</router-link>
+                <router-link tag="li" to="/weather"><Icon type="md-cloud" />&nbsp;&nbsp;了解天气</router-link>
+                <router-link v-show="adminShow" tag="li" to="/addFlight"><Icon type="ios-create-outline"/>&nbsp;&nbsp;航班管理</router-link>
             </nav>
             <div class="main-user-message">
                 <!-- <Icon type="md-notifications" /> -->
@@ -203,6 +203,9 @@ export default {
                 cursor: pointer;
             }
             > li:hover {
+                color:white;
+            }
+            .active {
                 color:white;
             }
         }
