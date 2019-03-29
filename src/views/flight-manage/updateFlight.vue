@@ -421,6 +421,7 @@ export default {
                     if(data.data.code == 200){
                         this.modal = false;
                         this.$Message.success('修改成功');
+                        this.flightData = {},
                         this.getFlightData(); 
                     }else {
                         this.$Message.error(data.data.msg);
