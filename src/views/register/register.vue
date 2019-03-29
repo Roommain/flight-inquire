@@ -71,6 +71,9 @@ export default {
           }
       }
   },
+  created() {
+      this.handleReset (name);
+  },
   methods: {
         handleSubmit (name) {
             this.$refs[name].validate((valid) => {
