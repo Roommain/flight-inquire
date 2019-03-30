@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import interlayer from '@/interlayer/interlayer'
 import md5 from 'js-md5';
 export default {
     data() {
@@ -101,6 +102,7 @@ export default {
         },
         registerSubmit () {
             this.$emit('register-change');
+            interlayer.$emit('active-register');
         },
         findPassword () {
             this.$emit('findPassword-change');

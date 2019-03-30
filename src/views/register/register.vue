@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import interlayer from '@/interlayer/interlayer'
 import md5 from 'js-md5';
 export default {
   name: 'register',
@@ -72,7 +73,9 @@ export default {
       }
   },
   created() {
-      this.handleReset (name);
+        interlayer.$on('active-register', item => {
+            this.handleReset ('formValidate');
+        })
   },
   methods: {
         handleSubmit (name) {
@@ -91,7 +94,7 @@ export default {
                                 }
                             });
                     } else {
-                        this.$Message.error('Fail!');
+                        this.$Message.error('输入错误！');
                     }
             })
         },
