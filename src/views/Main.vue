@@ -179,12 +179,12 @@ export default {
             .logo {
                 height: 50px;
                 margin-top: 8px;
+                transform: rotate(45deg);
             }
             .logo-title {
               vertical-align: 30%;
               font-size: 16px;
               color: rgba(209, 209, 209, 1);
-              
             }            
         }
         .main-nav {

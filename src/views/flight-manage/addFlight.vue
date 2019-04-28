@@ -402,46 +402,46 @@ import City from '@/components/city';
                 ],
                 ruleValidate: {
                     flightInformation: [
-                        { required: true, type: 'array', message: '请选择航班号', trigger: 'blur' },
+                        { required: true, type: 'array', message: '请选择航班号', trigger: 'change' },
                     ],
                     takeOffDate: [
-                        { required: true, type: 'date', message: '请选择航班日期', trigger: 'blur' },
+                        { required: true, type: 'date', message: '请选择航班日期', trigger: 'change' },
                     ],
                     takeOffTime: [
-                        { required: true, message: '请选择起飞时间', trigger: 'blur' }
+                        { required: true, message: '请选择起飞时间', trigger: 'change' }
                     ],
                     arrivalTime: [
-                        { required: true, message: '请选择到达时间', trigger: 'blur' }
+                        { required: true, message: '请选择到达时间', trigger: 'change' }
                     ],
                     placeOfDeparture: [
-                        { required: true, message: '请输入城市', trigger: 'blur' },
+                        { required: true, message: '请输入城市', trigger: 'change' },
                     ],
                     placeOfDestination: [
-                        { required: true, message: '请输入城市', trigger: 'blur' }
+                        { required: true, message: '请输入城市', trigger: 'change' }
                     ],
                     onTimeRate: [
-                        { required: true, message: '请输入准点率', trigger: 'blur' }
+                        { required: true, message: '请输入准点率', trigger: 'change' }
                     ],
                     departureGate: [
-                        { required: true, message: '请输入登机口', trigger: 'blur' },
+                        { required: true, message: '请输入登机口', trigger: 'change' },
                     ],
                     checkinCounters: [
-                        { required: true, message: '请输入值机柜台', trigger: 'blur' }
+                        { required: true, message: '请输入值机柜台', trigger: 'change' }
                     ],
                     baggageCarousel: [
-                        { required: true, message: '请输入行李转盘', trigger: 'blur' }
+                        { required: true, message: '请输入行李转盘', trigger: 'change' }
                     ],
                     aircraftType: [
-                        { required: true, type: 'array', message: '请选择航班机型', trigger: 'blur' },
+                        { required: true, type: 'array', message: '请选择航班机型', trigger: 'change' },
                     ],
                     aircraftAge: [
-                        { required: true, message: '请输入机龄', trigger: 'blur' }
+                        { required: true, message: '请输入机龄', trigger: 'change' }
                     ],
                     wholeJourney: [
-                        { required: true, message: '请输入航班全程', trigger: 'blur' }
+                        { required: true, message: '请输入航班全程', trigger: 'change' }
                     ],
                     duration: [
-                        { required: true, message: '请输入航班时长', trigger: 'blur' },
+                        { required: true, message: '请输入航班时长', trigger: 'change' },
                     ],
                 }
             }

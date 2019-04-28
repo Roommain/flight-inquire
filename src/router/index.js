@@ -25,17 +25,11 @@ const router = new Router({
         {
           path: '/statistical',
           name: '数据',
-          // meta: {
-          //   permissions: true,
-          // },
           component: resolve => require(['@/views/statistical/statistical_main'], resolve),
         },
         {
           path: '/particulars',
           name: '航班详情',
-          // meta: {
-          //   permissions: true,
-          // },
           component: resolve => require(['@/views/statistical/particulars'], resolve),
         },
         {
@@ -114,7 +108,6 @@ const router = new Router({
         },
       ]
     },
-    
     // 错误页面
     {
         path: '/403',
