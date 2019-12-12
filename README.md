@@ -1,6 +1,6 @@
 # flightinquire
 
-> 毕业设计飞机航班信息查询系统 使用vue+iview http://120.79.66.215
+> 毕业设计飞机航班信息查询系统 使用vue+iview
 ## Build Setup
 
 ``` bash
